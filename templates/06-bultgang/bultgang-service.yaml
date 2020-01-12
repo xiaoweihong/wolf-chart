@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bultgang-service
+  namespace: wolf
+spec:
+  type: NodePort
+  selector:
+    name: bultgang
+  ports:
+  - name: http
+    port: 18082
+    targetPort: 18082
+    nodePort: 31082

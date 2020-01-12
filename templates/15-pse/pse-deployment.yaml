@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pse
+  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: pse
+  template:
+    metadata:
+      labels:
+        name: pse
+    spec:
+      containers:
+      - name: pse
+        image: dockerhub.deepglint.com/wolf/pse:0.8.2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 1989 
+        command: ["./pse"]
+        args:
+        - "-stderrthreshold=0"
+        - "-logtostderr=true"
+        - "-v=4"
+        volumeMounts:
+        - name: pse-config
+          mountPath: /pse/config/config.json
+          subPath: config.json
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+        - name: pse-config
+          configMap:
+            name: pse-config
+        - name: localtime
+          hostPath:
+            path: /etc/localtime

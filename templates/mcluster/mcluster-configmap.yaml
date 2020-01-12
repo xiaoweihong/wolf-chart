@@ -1,0 +1,23 @@
+kind: ConfigMap
+metadata:
+  name: mcluster-config
+  namespace: wolf
+apiVersion: v1
+data:
+  config.json: |-
+    {
+        "http_api_port":8966,
+        "grpc_api_port":8967,
+        "images":{
+            "rtsp":{
+                "repo_name":"docker.dg-atlas.com:5000",
+                "mspout_name":"mspout-ffmpeg",
+                "version":"1.0.8"
+            },
+            "file":{
+                "repo_name":"docker.dg-atlas.com:5000",
+                "mspout_name":"mspout-ffmpeg",
+                "version":"1.0.8"
+            }
+        }
+    }

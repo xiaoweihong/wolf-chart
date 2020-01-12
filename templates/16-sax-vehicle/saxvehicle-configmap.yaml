@@ -1,0 +1,146 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: saxvehicle-config
+  namespace: wolf
+data:
+  application.yml: |
+    server:
+      port: 8084
+      tomcat:
+        uri-encoding: UTF-8
+        max-connections: 5000
+        min-spare-threads: 100
+        accept-count: 5000
+        max-threads: 10000
+      connection-timeout: 5000
+    
+    
+    spring:
+      datasource:
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://postgres-service.wolf.svc.cluster.local:5432/sax_vehicle
+        username: postgres
+        password: Zstvgcs@9102
+      jpa:
+        show-sql: true
+        hibernate:
+          ddl-auto: update
+        database: postgresql
+        properties:
+          hibernate:
+            dialect: org.hibernate.dialect.PostgreSQLDialect
+            temp:
+              use_jdbc_metadata_defaults: false
+    
+    cache:
+      query:
+        size: 100000
+        thread: 3
+  logback-spring.xml: |
+    <?xml version="1.0" encoding="UTF-8"?>
+    <configuration>
+    
+        <!--定义日志文件的存储地址 勿在 LogBack的配置中使用相对路径 -->
+        <property name="LOG_HOME" value="logs" />
+        <!--定义日志文件名称 -->
+        <property name="LOG_NAME" value="sax" />
+    
+    
+        <!-- 控制台输出 -->
+        <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+            <Target>System.out</Target>
+            <encoder>
+                <pattern>%black(控制台-) %red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{80}:%L) - %cyan(%msg%n)</pattern>
+                <charset class="java.nio.charset.Charset">UTF-8</charset>
+            </encoder>
+        </appender>
+    
+        <!-- 时间滚动输出 level为 DEBUG 日志 -->
+        <appender name="debugLog"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+                <pattern>[%-5level]%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%logger{80}:%L]-%msg%n</pattern>
+                <charset class="java.nio.charset.Charset">UTF-8</charset>
+            </encoder>
+            <!-- 此日志文件只记录debug级别的 -->
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>debug</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+            <file>${LOG_HOME}/${LOG_NAME}-debug.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <FileNamePattern>${LOG_HOME}/${LOG_NAME}/${LOG_NAME}-debug.%d{yyyy-MM-dd}.%i.log.gz</FileNamePattern>
+                <!--日志文件保留天数 -->
+                <MaxHistory>30</MaxHistory>
+                <!--日志文件最大的大小 -->
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+        </appender>
+    
+        <!-- info相关日志 -->
+        <appender name="infoLog"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+                <pattern>[%-5level]%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%logger{80}:%L]-%msg%n</pattern>
+                <charset class="java.nio.charset.Charset">UTF-8</charset>
+            </encoder>
+            <!-- 此日志文件只记录info级别的 -->
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>info</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+            <file>${LOG_HOME}/${LOG_NAME}-info.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <FileNamePattern>${LOG_HOME}/${LOG_NAME}/${LOG_NAME}-info.%d{yyyy-MM-dd}.%i.log.gz</FileNamePattern>
+                <!--日志文件保留天数 -->
+                <MaxHistory>30</MaxHistory>
+                <!--日志文件最大的大小 -->
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+        </appender>
+    
+       <!--错误日志输出-->
+        <appender name="errorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <encoder>
+                <pattern>[%p][%d{yy-MM-dd HH:mm:ss}][%c:%L]%m%n</pattern>
+                <charset class="java.nio.charset.Charset">UTF-8</charset>
+            </encoder>
+            <!-- 此日志文件只记录ERROR级别的 -->
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>ERROR</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+            <file>${LOG_HOME}/${LOG_NAME}-error.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_HOME}/${LOG_NAME}/${LOG_NAME}-error.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                <maxHistory>30</maxHistory>
+                <!--日志文件最大的大小 -->
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+        </appender>
+    
+        <!--日志过滤-->
+        <logger name="com.deepglint" level="info" />
+    
+        <!--日志输出-->
+        <root level="info">
+            <appender-ref ref="console"/>
+            <appender-ref ref="debugLog"/>
+            <appender-ref ref="errorLog"/>
+            <appender-ref ref="infoLog"/>
+        </root>
+    
+    </configuration>
+    

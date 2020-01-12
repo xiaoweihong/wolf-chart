@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pse-config
+  namespace: wolf
+data:
+  config.json: |
+    {
+      "ListenAddr": "0.0.0.0:1989",
+      "RedisServiceConfig": {
+        "Addr": "redis-service.wolf.svc.cluster.local:6379",
+        "Passward": "",
+        "DB": 2
+      }
+    }

@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: arcee-capture-service
+  namespace: wolf
+spec:
+  type: NodePort
+  selector:
+    name: arcee-capture
+  ports:
+  - name: http
+    port: 8501
+    targetPort: 8501
+    nodePort: 30851
+  - name: grpc
+    port: 8502
+    targetPort: 8502
+    nodePort: 30852
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: arcee-register-service
+  namespace: wolf
+spec:
+  type: NodePort
+  selector:
+    name: arcee-register
+  ports:
+  - name: http
+    port: 7501
+    targetPort: 7501
+    nodePort: 30751
+  - name: grpc
+    port: 7502
+    targetPort: 7502
+    nodePort: 30752

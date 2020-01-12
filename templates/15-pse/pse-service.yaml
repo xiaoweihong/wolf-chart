@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pse-service
+  namespace: wolf
+spec:
+  type: NodePort
+  selector:
+    name: pse
+  ports:
+  - name: http
+    port: 1989
+    targetPort: 1989
+    nodePort: 31089

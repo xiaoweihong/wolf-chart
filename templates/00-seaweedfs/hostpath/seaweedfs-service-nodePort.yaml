@@ -1,0 +1,125 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: capture-seaweedfs-service-master
+  namespace: wolf
+spec:
+  type: NodePort
+  selector:
+    name: capture-seaweedfs-master
+  ports:
+  - name: http
+    port: 9333
+    targetPort: 9333
+    nodePort: 30333
+  - name: grpc
+    port: 19333
+    targetPort: 19333
+    nodePort: 31333
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: capture-seaweedfs-service-volume00
+  namespace: wolf
+spec:
+  type: NodePort
+  selector:
+    name: capture-seaweedfs-volume00
+  ports:
+  - name: http
+    port: 9300
+    targetPort: 9300
+    nodePort: 30300
+  - name: grpc
+    port: 19300
+    targetPort: 19300
+    nodePort: 31300
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: capture-seaweedfs-service-volume01
+  namespace: wolf
+spec:
+  type: NodePort
+  selector:
+    name: capture-seaweedfs-volume01
+  ports:
+  - name: http
+    port: 9301
+    targetPort: 9301
+    nodePort: 30301
+  - name: grpc
+    port: 19301
+    targetPort: 19301
+    nodePort: 31301
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: register-seaweedfs-service-master
+  namespace: wolf
+spec:
+  type: NodePort
+  selector:
+    name: register-seaweedfs-master
+  ports:
+  - name: http
+    port: 5333
+    targetPort: 5333
+    nodePort: 30533
+  - name: grpc
+    port: 15333
+    targetPort: 15333
+    nodePort: 31533
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: register-seaweedfs-service-volume00
+  namespace: wolf
+spec:
+  type: NodePort
+  selector:
+    name: register-seaweedfs-volume00
+  ports:
+  - name: http
+    port: 5300
+    targetPort: 5300
+    nodePort: 30500
+  - name: grpc
+    port: 15300
+    targetPort: 15300
+    nodePort: 31500
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: register-seaweedfs-service-volume01
+  namespace: wolf
+spec:
+  type: NodePort
+  selector:
+    name: register-seaweedfs-volume01
+  ports:
+  - name: http
+    port: 5301
+    targetPort: 5301
+    nodePort: 31501
+  - name: grpc
+    port: 15301
+    targetPort: 15301
+    nodePort: 32501

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mutischeduler-config
+  namespace: wolf
+data:
+  config.json: |-
+    {
+        "http_api_port":9009,
+        "cluster_mode":true,
+        "node_mcluster":{
+            "mcluster1":{
+                "host_addr":"192.168.100.118:8966"
+            }
+        }
+    }

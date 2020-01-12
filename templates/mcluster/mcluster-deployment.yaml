@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcluster
+  namespace: wolf
+  labels:
+     app: mcluster
+spec:
+     selector:
+       matchLabels:
+         app: mcluster
+     template:
+       metadata:
+         labels:
+           app: mcluster
+       spec: 
+         containers:
+         - name: mcluster
+           image: docker.dg-atlas.com:5000/mcluster:4.1.0
+           command: ["./mcluster"]
+           args: 
+           - "-path=/atlas/config/config.json"
+           - "-logtostderr=1"
+           - "-v=8"
+           imagePullPolicy: IfNotPresent
+           ports:
+           - name: grpc-port
+             containerPort: 8967
+             hostPort: 8967
+           - name: http-port
+             containerPort: 8966
+             hostPort: 8966
+           volumeMounts:
+           - name: mcluster-config-volumes
+             mountPath: /atlas/config/
+           - name: localtime
+             mountPath: /etc/localtime
+           - name: docker
+             mountPath: /var/run/docker.sock
+         volumes:
+         - name: mcluster-config-volumes
+           configMap:
+             name: mcluster-config 
+         - name: localtime
+           hostPath:
+             path: /etc/localtime
+         - name: docker
+           hostPath:
+             path: /var/run/docker.sock

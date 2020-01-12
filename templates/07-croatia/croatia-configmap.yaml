@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: croatia-config 
+  namespace: wolf
+data:
+  croatia_config.txt: | 
+    {
+      "ValidFileStuffix": {
+        ".bmp": ".bmp",
+        ".jpg": ".jpg",
+        ".png": ".png",
+        ".tiff": ".tiff"
+      },
+      "MatrixConfig": {
+        "IsOpen": false,
+        "Addr": "http://vse-face-service.vse.svc.cluster.local:7458/rec/image",
+        "ConnectNumber": 10,
+        "TimeoutSecond": 5,
+        "TryTimes": 3,
+        "AllFaceContext": {
+          "SessionId": "all_face",
+          "Functions": [
+            200
+          ],
+          "Type": 2,
+          "Params": {
+            "detect_mode": "1"
+          }
+        }
+      },
+      "RankerConfig": {
+        "WarnRankerAddr": "http://fseapi-service.fse.svc.cluster.local:8000/x-api/v1/repositories",
+        "WarnRankerConnectNumber": 1000,
+        "TimeoutSecond": 5
+      },
+      "MatrixThreadPoolMaxNum": 1000,
+      "MatrixThreadPoolOpenNum": 5,
+      "ItemProcessGroupNum": 100000,
+      "RollBackTreadPoolNum": 20,
+      "MaxItemNum": 10000000,
+      "MaxInputTaskNum": 2,
+      "MaxDeleteTaskNum": 1,
+      "MaxCopyTaskNum": 1,
+      "MaxItemNumOnePerson": 5,
+      "ImageSaveGroupNum": 100000,
+      "ImageSaveThreadPoolMaxNum": 20,
+      "DeleteThreadPoolMaxNum": 50,
+      "ImageSaveConfig": {
+        "ConfigType": 1,
+        "ConfigInfo": {
+          "Host": "arcee-register-service.wolf.svc.cluster.local:7502",
+          "TimeoutSecond": 3,
+          "ConnectNumber": 10
+        }
+      },
+      "DBServiceConfig": {
+        "ConfigType": 1,
+        "ConfigInfo": {
+          "ClientNum": 1,
+          "Host": "postgres-service.wolf.svc.cluster.local",
+          "Port": 5432,
+          "UserName": "postgres",
+          "PassWord": "Zstvgcs@9102",
+          "DBName": "deepface_v5",
+          "MaxOpenConnsPerClient": 20,
+          "MaxIdleConnsPerClient": 20,
+          "MaxLifeTimeSeconds": 60
+        }
+      },
+      "StatusTmpDir": "config/",
+      "RepoCountUpdateServiceConfig": {
+        "IsOpen": true,
+        "HttpUrl": "http://loki-service.wolf.svc.cluster.local:3000/internal/croatia/repo"
+      }
+    }

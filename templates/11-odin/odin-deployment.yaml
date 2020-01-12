@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odin
+  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: odin
+  template:
+    metadata:
+      labels:
+        name: odin
+    spec:
+      containers:
+      - name: odin
+        image: dockerhub.deepglint.com/wolf/odin:1.0.2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 7071
+        command: ["./odin"]
+        args:
+        - "-stderrthreshold=0"
+        - "-logtostderr=true"
+        - "-v=4"
+        volumeMounts:
+        - name: odin-config
+          mountPath: /odin/configs/config.json
+          subPath: config.json
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+        - name: odin-config
+          configMap:
+            name: odin-config
+        - name: localtime
+          hostPath:
+            path: /etc/localtime

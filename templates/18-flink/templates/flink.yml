@@ -1,0 +1,112 @@
+---
+# 配置文件
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flink-config
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app: flink
+{{- with $.Values.config }}
+data:
+{{ toYaml .data | indent 2 }}
+{{- end }}
+---
+# 循环部署应用
+{{- range .Values.application }}
+{{- $application := .}}
+{{- $image := (printf "%s:%s" .repository .tag) }}
+---
+# 部署service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $application.name }}-jobmanager
+  namespace: {{ $.Release.Namespace }}
+spec:
+  selector:
+    app: {{ $application.name }}
+    instance: {{ $application.name }}-jobmanager
+  type: NodePort
+  ports:
+  - name: rpc
+    port: 6123
+  - name: blob
+    port: 6124
+  - name: query
+    port: 6125
+  - name: ui
+    port: 8081
+---
+# 部署taskmanager
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $application.name }}-taskmanager
+  namespace: {{ $.Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ $application.name }}
+      instance: {{ $application.name }}-taskmanager
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ $application.name }}
+        instance: {{ $application.name }}-taskmanager
+    spec:
+      containers:
+      - name: {{ $application.name }}-taskmanager
+        image: {{ $image }}
+        imagePullPolicy: {{ $application.pullPolicy | default "Always" }}
+        command: ["/opt/flink/bin/taskmanager.sh"]
+        args: ["start-foreground", "-Djobmanager.rpc.address={{ $application.name }}-jobmanager"]
+---
+# 部署jobmanager
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $application.name }}-jobmanager
+  namespace: {{ $.Release.Namespace }}
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ $application.name }}
+        instance: {{ $application.name }}-jobmanager
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: {{ $application.name }}-jobmanager
+        image: {{ $image }}
+        imagePullPolicy: {{ $application.pullPolicy | default "Always" }}
+        env:
+        - name: custom.config.path
+          value: "/opt/flink/lib/config/application.properties"
+        command: ["/opt/flink/bin/standalone-job.sh"]
+        args: ["start-foreground",
+               "-Djobmanager.rpc.address={{ $application.name }}-jobmanager",
+               "-Dparallelism.default=1",
+               "-Dblob.server.port=6124",
+               "-Dqueryable-state.server.ports=6125"]
+        ports:
+        - containerPort: 6123
+          name: rpc
+        - containerPort: 6124
+          name: blob
+        - containerPort: 6125
+          name: query
+        - containerPort: 8081
+          name: ui
+        volumeMounts:
+        - name: config-volume
+          mountPath: /opt/flink/lib/config
+      volumes:
+      - name: config-volume
+        configMap:
+          name: flink-config
+          items:
+          - key: {{ $application.name }}
+            path: application.properties
+{{- end}}

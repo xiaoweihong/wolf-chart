@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: k2s-service
+  namespace: wolf
+spec:
+  type: NodePort
+  selector:
+    name: k2s
+  ports:
+  - name: http
+    port: 8082
+    targetPort: 8082
+    nodePort: 30082

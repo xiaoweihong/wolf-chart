@@ -1,0 +1,364 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loki-template-config 
+  namespace: wolf
+data:
+  dc84.json: | 
+    {
+        "config":
+        {
+            "type":"hkDC84",
+            "ip":"192.168.100.82",
+            "port":"8000",
+            "user_name":"admin",
+            "passwd":"Admin123",
+            "camera":"DC84",
+            "kafkaconfig":{
+                "kafka_addr":"192.168.100.118:32400",
+                "kafka_topic":"face-importer",
+                "kafka_max_size_bytes":"104857600"
+            },
+            "function":{
+                "motor_vehicle_detect":"2",
+                "non_motor_vehicle_detect":"2",
+                "pedestrian_detect":"2",
+                "face_detect":"2"
+            }, 
+            "reconnect_time":"",
+            "max_thread":"",
+            "is_removeduplication":"true",
+            "sensor_id":"e6f195d3-5b3a-4a52-a2ce-11bcc67621aa"
+        }
+    }
+  huawei.json: | 
+    {
+        "config":
+        {
+            "type":"huawei",
+            "ip":"192.168.0.120",
+            "port":"6060",
+            "user_name":"admin",
+            "passwd":"HuaWei123",
+            "back_ground_width":"1920",
+            "back_ground_height":"1080",
+            "kafkaconfig":{
+                "kafka_addr":"192.168.100.118:32400",
+                "kafka_topic":"face-importer",
+                "kafka_max_size_bytes":"104857600"
+                          },
+    
+            "reconnect_time":"",
+            "max_thread":"",
+            "is_removeduplication":"true",
+            "sensor_id":"571d31b4-c556-4691-b4e4-4091c73481c2"
+    
+        }
+    
+    }
+  huimu.json: | 
+    {
+        "config":
+        {
+            "type":"huimu",
+            "ip":"192.168.1.19",
+            "port":"9902",
+            "user_name":"123",
+            "passwd":"123",
+            "kafkaconfig":{
+                "kafka_addr":"192.168.100.118:32400",
+                "kafka_topic":"face-importer",
+                "kafka_max_size_bytes":"50000000"
+                          },
+    
+            "reconnect_time":"",
+            "max_thread":"",
+            "is_removeduplication":"true",
+            "sensor_id":"b0a02737-c7de-4e62-9745-6c4c78773fd5"
+    
+        }
+    
+    }
+  importer.json: | 
+    {
+        "FTPConfig":{
+            "Address":"127.0.0.1:21",
+            "UserName": "ftp",
+            "Password": "123",
+            "RootDir": "/t",
+            "SleepMillSecondPerItem":20
+        },
+        "DataType":"protobuf",
+        "DefaultSpeed":10,
+        "ArceeAddr":"192.168.100.118:30852",
+        "RedisConfig":{
+          "Database":4,
+          "ReadTimeout":1,
+          "Addrs":[
+            "192.168.100.118:6379"
+          ],
+          "Password":"deepglint@2013",
+          "SingleNode":true,
+          "WriteTimeout":1,
+          "DialTimeout":5,
+          "MaxRetries":10,
+          "PoolSize":5,
+          "RedLock":null
+        },
+        "DefaltKafkaConsumer":{
+          "KafkaBootstrapServers":"192.168.100.118:32400",
+          "KafkaGroupName":"index-vehicle2",
+          "KafkaTopic":[
+            "index-vehicle2"
+          ],
+          "Newest":false,
+          "Concurrence":1
+        },
+        "MatrixConfig":{
+          "PoolSize":300,
+          "AllObject":true,
+          "ReqTimeOut":10,
+          "HttpAddr":"http://192.168.100.118:38080/vse/vehicle/rec/image",
+          "ConcurrenceConsumerNum":10,
+          "FilterThreshold":0.5,
+          "Addr":"127.0.0.1:6504",
+          "FaceGrpcAddr":"127.0.0.1:6504",
+          "FaceHttpSchema":"http://192.168.100.118:38080/vse/face/rec/image",
+          "FExpandConfig":{
+            "Top":0.5,
+            "Bottom":0.1,
+            "Left":0.15,
+            "Right":0.15,
+            "EnableSquare":true,
+            "EnlargeRatio":1.5
+          }
+        },
+        "ServerMode":false,
+        "SqlMap":{
+          "deepvideo_vehicle_postgres":"select id, ts, repo_sensor_id/10000000000 as repo_id, '' as repo_name, repo_sensor_id/10000000000 as sensor_id, '' as sensor_name, unique_sensor_id, image_uri as url from vehicles where id>$1 limit $2;",
+          "deepvideo_vehicle_oracle":"SELECT PASS.PASS_ID, extract(day from (PASS_TIME - timestamp '1970-01-01 00:00:00.000')) * 86400000 + extract(hour from (PASS_TIME - timestamp '1970-01-01 00:00:00.000')) * 3600000 + extract(minute from (PASS_TIME - timestamp '1970-01-01 00:00:00.000')) * 60000 + extract(second from (PASS_TIME - timestamp '1970-01-01 00:00:00.000')) * 1000 AS ts, 0 AS repo_id, 'rn' AS repo_name, CROSS.CROSSING_ID AS sensor_id, CROSS.CROSSING_NAME, CROSS.CROSSING_ID AS unique_sensor_id, 'http://' || SERVER.IP_ADDR || ':' || SERVER.HPP_PORT || PIC.VEHICLEPICURL AS url FROM PICURL_INFO PIC, SERVER_INFO SERVER, TRAFFIC_CROSSING_INFO CROSS, TRAFFIC_VEHICLE_PASS PASS WHERE PIC.VEHICLELSH IN (SELECT PASS_ID FROM TRAFFIC_VEHICLE_PASS WHERE PASS_ID>&1 AND ROWNUM<=&2) AND PASS.CROSSING_ID=CROSS.CROSSING_ID AND PIC.VEHICLELSH=PASS.PASS_ID AND PIC.VRBLSH=SERVER.SERVER_ID"
+        },
+        "DefaultRepoId":1,
+        "UtcMode":true,
+        "SpeedLimitMultiple":2,
+        "HttpAddr":"0.0.0.0:1307",
+        "DefaultFuncs":[
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          110,
+          300,
+          301,
+          400,
+          401,
+          402
+        ],
+        "SingleMode":false,
+        "OlympusConfig":{
+          "Enable":false,
+          "Interval":3,
+          "Schema":"http://192.168.2.169:30233/link/v1/instances/%s/info"
+        },
+        "MatrixMode":true,
+        "DeleteMode":false,
+        "DefaultKafkaAddr":"192.168.100.118:32400",
+        "DefaultTask":{
+          "Output":{
+            "Attributes":[
+              {
+                "Key":"topic",
+                "Value":"index-vehicle2"
+              },
+              {
+                "Key":"address",
+                "Value":"192.168.100.118:32400"
+              }
+            ],
+            "SpeedLimit":1,
+            "Type":3,
+            "RecFuncs":[
+              100, 
+              101,
+              102,
+              103,
+              104,
+              105,
+              106,
+              107,
+              108,
+              109,
+              110,
+              300,
+              301,
+              400,
+              401,
+              402,
+              200,
+              201,
+              202,
+              203,
+              204,
+              205
+            ],
+            "RecTypes":[
+              3 
+            ]
+          },
+          "Source":{
+            "Type":9,
+            "DefaultSensorId":1,
+            "Attributes":[
+              {
+                "Key":"url",
+                "Value":"http://127.0.0.1/dgtestdata/20180725224911/bigImg/"
+              }
+            ],
+            "DefaultRepoId":11,
+            "DefaultSensorName":"",
+            "DefaultRepoName":""
+          },
+          "TaskId":1,
+          "TaskName":"",
+          "DeleteMode":false
+        },
+        "DefaultKafkaTopic":"index-vehicle2",
+        "DefaultImageKafkaTopic":"kafka-image-topic",
+        "RpcAddr":"0.0.0.0:1306",
+        "PreviewMode":false,
+        "WriteUrl":true
+      }
+  importer_libraF.json: | 
+    {
+        "Weed":{
+            "Host":"192.168.100.118:30852",
+            "IsOpen":true
+        },
+        "OutputSlice":[
+            {
+                "ConfigType":1,
+                "ConfigInfo":{
+                    "MaxThread":100,
+                    "KafkaTopic":"face-importer",
+                    "KafkaAddress":[
+                        "192.168.100.118:32400"
+                    ],
+                    "MaxMessageBytes":"104857600"
+                }
+            }
+        ],
+        "InputSlice":[
+            {
+                "ConfigType":1,
+                "ConfigInfo":{
+                    "ServerPublicKey":"52K]#sKz.]XBiOJ2vsk$g(V]x^1hO&5L0n!9q(Mx",
+                    "GetMessageAddress":"tcp://192.168.2.169:9800",
+                    "SensorInfo":{
+                        "SensorID":"8d62b5b2-a22e-4d03-acea-0b2581d5c7c8",
+                        "SensorFilter":{
+                            "IsRemoveDuplication":true,
+                            "CaptureFaceQualityOff":false,
+                            "QualityThreshold":0.3
+                        }
+                    },
+                    "TimeoutSecond":5,
+                    "RegisterAddress":"tcp://192.168.2.169:9801"
+                }
+            }
+        ]
+    }
+  dahua.json: | 
+    {
+        "config":
+        {
+            "type":"dahua",
+            "ip":"192.168.5.76",
+            "port":"37777",
+            "user_name":"admin",
+            "passwd":"admin123",
+            "kafkaconfig":{
+                "kafka_addr":"192.168.100.118:32400",
+                "kafka_topic":"face-importer",
+                "kafka_max_size_bytes":"104857600"
+                          },
+            
+            "reconnect_time":"",
+            "max_thread":"",
+            "is_removeduplication":"true",
+            "sensor_id":""
+        }
+        
+    }
+  haikangsdk.json: | 
+    {
+        "config":
+        {
+            "type":"haikang",
+            "ip":"192.168.19.125",
+            "port":"8000",
+            "user_name":"admin",
+            "passwd":"admin123",
+            "kafkaconfig":{
+                "kafka_addr":"192.168.100.118:32400",
+                "kafka_topic":"face-importer",
+                "kafka_max_size_bytes":"104857600"
+                          },
+            
+            "reconnect_time":"",
+            "max_thread":"",
+            "is_removeduplication":"true",
+            "sensor_id":"b0a02737-c7de-4e62-9745-6c4c78773fd5"
+            
+        }
+        
+    }
+  link_video.json: | 
+    {
+        "task_id":"a",
+        "video_input":{
+            "uri":"rtsp://192.168.2.123:554/live/t1031",
+            "params":{
+    
+            }
+        },
+        "task_type":"live",
+        "task_key_frame":true,
+        "end_time":-1,
+        "speedx":1,
+        "function":{
+            "motor_vehicle_detect":2,
+            "non_motor_vehicle_detect":2,
+            "pedestrian_detect":2,
+            "face_detect":2
+        },
+        "rois":[
+    
+        ],
+        "sys_event_output":{
+            "uri":"http://192.168.6.106/callback",
+            "params":{
+    
+            }
+        },
+        "render_output":{
+    
+        },
+        "vsd_output":{
+            "params":{
+            }
+        },
+        "user_data":{
+    
+        },
+        "extends":{
+    
+        }
+    }
+    
+            

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: master-deployment
+  namespace: deepdata-warwolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: master-seaweedfs-service
+  template:
+    metadata:
+      labels:
+        name: master-seaweedfs-service
+    spec:
+      containers:
+      - name: seaweedfs-master
+        image: chrislusf/seaweedfs:1.44
+        ports:
+        - name: http
+          containerPort: 9333
+        - name: grpc
+          containerPort: 19333
+        args:
+        - "master"
+        - "-ip=master-seaweedfs-service.deepdata-warwolf.svc.cluster.local"
+        volumeMounts:
+        - name: master-data
+          mountPath: /data
+      volumes:
+      - name: master-data
+        emptyDir: {}
+        #hostPath:
+        #  path: /data/seaweedfs/master

@@ -1,0 +1,112 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kafka
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kafka-pv-0
+  namespace: kafka
+  labels:
+    app: kafka-pv-0
+spec:
+  capacity:
+    storage: 100Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+  hostPath:
+    path: /data/bigtoe/kafka/pv0
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kafka-pv-1
+  namespace: kafka
+  labels:
+    app: kafka-pv-1
+spec:
+  capacity:
+    storage: 100Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+  hostPath:
+    path: /data/bigtoe/kafka/pv1
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kafka-pv-2
+  namespace: kafka
+  labels:
+    app: kafka-pv-2
+spec:
+  capacity:
+    storage: 100Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+  hostPath:
+    path: /data/bigtoe/kafka/pv2
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pzoo-pv-0
+  namespace: kafka
+  labels:
+    app: pzoo-pv-0
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+  hostPath:
+    path: /data/bigtoe/zookeeper/pv0
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pzoo-pv-1
+  namespace: kafka
+  labels:
+    app: pzoo-pv-1
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+  hostPath:
+    path: /data/bigtoe/zookeeper/pv1
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pzoo-pv-2
+  namespace: kafka
+  labels:
+    app: pzoo-pv-2
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+  hostPath:
+    path: /data/bigtoe/zookeeper/pv2

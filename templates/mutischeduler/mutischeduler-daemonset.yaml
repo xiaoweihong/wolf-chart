@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mutischeduler
+  namespace: wolf
+  labels:
+     app: mutischeduler
+spec:
+     selector:
+       matchLabels:
+         app: mutischeduler
+     template:
+       metadata:
+         labels:
+           app: mutischeduler
+       spec: 
+         containers:
+         - name: mutischeduler
+           image: dockerhub.deepglint.com/arch/mutischeduler:1.0.0
+           command: ["./mutischeduler"]
+           args: 
+           - "-path=/atlas/config/config.json"
+           - "-stderrthreshold=0"
+           - "-logtostderr=true"
+           - "-v=8"
+           imagePullPolicy: IfNotPresent
+           ports:
+           - name: run-port
+             containerPort: 9009
+             hostPort: 9009
+           volumeMounts:
+           - name: mutischeduler-config-volumes
+             mountPath: /atlas/config/
+           - name: localtime
+             mountPath: /etc/localtime
+         volumes:
+         - name: mutischeduler-config-volumes
+           configMap:
+             name: mutischeduler-config 
+         - name: localtime
+           hostPath:
+             path: /etc/localtime

@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arcee-capture
+  namespace: {{.Values.namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: arcee-capture
+  template:
+    metadata:
+      labels:
+        name: arcee-capture
+    spec:
+      containers:
+      - name: arcee-capture
+        image: dockerhub.deepglint.com/wolf/arcee:{{.Values.arcee.imageTag}}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8501
+        - name: grpc
+          containerPort: 8502
+        command: ["./arcee"]
+        args:
+        - "-config"
+        - "/arcee/config/arcee.json"
+        - "-stderrthreshold=0"
+        - "-logtostderr=true"
+        - "-v=8"
+        volumeMounts:
+        - name: arcee-capture
+          mountPath: /arcee/config
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+        - name: arcee-capture
+          configMap:
+            name: arcee-capture-config
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arcee-register
+  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: arcee-register
+  template:
+    metadata:
+      labels:
+        name: arcee-register
+    spec:
+      containers:
+      - name: arcee-register
+        image: dockerhub.deepglint.com/wolf/arcee:{{.Values.arcee.imageTag}}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 7501
+        - name: grpc
+          containerPort: 7502
+        command: ["./arcee"]
+        args:
+        - "-config"
+        - "/arcee/config/arcee.json"
+        - "-stderrthreshold=0"
+        - "-logtostderr=true"
+        - "-v=8"
+        volumeMounts:
+        - name: arcee-register
+          mountPath: /arcee/config
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+        - name: arcee-register
+          configMap:
+            name: arcee-register-config
+        - name: localtime
+          hostPath:
+            path: /etc/localtime

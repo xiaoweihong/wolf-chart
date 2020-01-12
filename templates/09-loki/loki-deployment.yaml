@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loki
+  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: loki
+  template:
+    metadata:
+      labels:
+        name: loki
+    spec:
+      containers:
+      - name: loki
+        image: dockerhub.deepglint.com/wolf/loki:1.9.12
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 3000
+        command: ["./loki"]
+        args:
+        - "-stderrthreshold=0"
+        - "-logtostderr=true"
+        - "-v=8"
+        env:
+        - name: HOSTIP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        volumeMounts:
+        - name: loki-config
+          mountPath: /loki/config/production.json
+          subPath: production.json
+        - name: loki-config
+          mountPath: /loki/config/default.json
+          subPath: default.json
+        - name: loki-template-config
+          mountPath: /loki/config/templates
+        - name: loki-upload
+          mountPath: /platformData/loki/upload
+        - name: loki-video
+          mountPath: /data/bigtoe/upload-videos
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+        - name: loki-config
+          configMap:
+            name: loki-config
+        - name: loki-template-config
+          configMap:
+            name: loki-template-config
+        - name: loki-upload
+          hostPath:
+            path: /platformData/loki/upload
+        - name: loki-video
+          hostPath:
+            path: /data/bigtoe/upload-videos
+        - name: localtime
+          hostPath:
+            path: /etc/localtime

@@ -1,0 +1,12 @@
+
+namespace: wolf
+
+HOSTIP: 192.168.2.45
+
+seaweedfs:
+  imageTag: 1.48
+
+
+arcee:
+  imageTag: 0.5.4_sp2
+  

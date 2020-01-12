@@ -1,0 +1,101 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: data-kafka-0
+  namespace: kafka
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: slow
+  selector:
+    matchLabels:
+      app: "kafka-pv-0"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: data-kafka-1
+  namespace: kafka
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: slow
+  selector:
+    matchLabels:
+      app: "kafka-pv-1"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: data-kafka-2
+  namespace: kafka
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: slow
+  selector:
+    matchLabels:
+      app: "kafka-pv-2"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: data-pzoo-0
+  namespace: kafka
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: slow
+  selector:
+    matchLabels:
+      app: "pzoo-pv-0"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: data-pzoo-1
+  namespace: kafka
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: slow
+  selector:
+    matchLabels:
+      app: "pzoo-pv-1"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: data-pzoo-2
+  namespace: kafka
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: slow
+  selector:
+    matchLabels:
+      app: "pzoo-pv-2"

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bultgang
+  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: bultgang
+  template:
+    metadata:
+      labels:
+        name: bultgang
+    spec:
+      containers:
+      - name: bultgang
+        image: dockerhub.deepglint.com/wolf/bultgang:0.6.5
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 18082
+        command: ["./bultgang"]
+        args:
+        - "-stderrthreshold=0"
+        - "-logtostderr=true"
+        - "-v=8"
+        volumeMounts:
+        - name: bultgang-config
+          mountPath: /bultgang/config.json
+          subPath: config.json
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+        - name: bultgang-config
+          configMap:
+            name: bultgang-config
+        - name: localtime
+          hostPath:
+            path: /etc/localtime

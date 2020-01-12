@@ -1,0 +1,138 @@
+kind: ConfigMap
+metadata:
+  name: cache-configmap
+  namespace: wolf
+apiVersion: v1
+data:
+  redis.conf: |-
+    #GENERAL
+    daemonize no
+    tcp-backlog 511
+    timeout 0
+    tcp-keepalive 60
+    loglevel notice
+    databases 16
+    slave-serve-stale-data yes
+    #slave只读
+    slave-read-only yes
+    #not use default
+    repl-disable-tcp-nodelay yes
+    slave-priority 100
+    lua-time-limit 5000
+    #打开redis集群
+    cluster-enabled no
+    #节点互连超时的阀值
+    cluster-node-timeout 15000
+    cluster-migration-barrier 1
+    slowlog-log-slower-than 10000
+    slowlog-max-len 128
+    notify-keyspace-events ""
+    hash-max-ziplist-entries 512
+    hash-max-ziplist-value 64
+    list-max-ziplist-entries 512
+    list-max-ziplist-value 64
+    set-max-intset-entries 512
+    zset-max-ziplist-entries 128
+    zset-max-ziplist-value 64
+    activerehashing yes
+    client-output-buffer-limit normal 0 0 0
+    client-output-buffer-limit slave 256mb 64mb 60
+    client-output-buffer-limit pubsub 32mb 8mb 60
+    hz 10
+    #绑定IP
+    bind 0.0.0.0
+    #监听tcp端口  
+    port 6378 
+    dir /redis-cache-data
+    #最大可用内存  
+    maxmemory 8gb
+    #内存耗尽时采用的淘汰策略:  
+    # volatile-lru -> remove the key with an expire set using an LRU algorithm  
+    # allkeys-lru -> remove any key accordingly to the LRU algorithm  
+    # volatile-random -> remove a random key with an expire set  
+    # allkeys-random -> remove a random key, any key  
+    # volatile-ttl -> remove the key with the nearest expire time (minor TTL)  
+    # noeviction -> don't expire at all, just return an error on write operations  
+    maxmemory-policy allkeys-lru
+    #aof存储文件  
+    #appendfilename "appendonly-6379.aof"  
+    #rdb文件,只用于动态添加slave过程  
+    #dbfilename dump-6379.rdb  
+    #cluster配置文件(启动自动生成)  
+    #cluster-config-file nodes-6379.conf  
+    #部署在同一机器的redis实例，把<span style="font-size: 1em; line-height: 1.5;">auto-aof-rewrite搓开，防止瞬间fork所有redis进程做rewrite,占用大量内存</span>  
+    #auto-aof-rewrite-percentage 80-100 
+    appendonly no
+    #save 900 1
+    rename-command FLUSHALL ""
+
+---
+kind: ConfigMap
+metadata:
+  name: persistence-configmap
+  namespace: wolf
+apiVersion: v1
+data:
+  redis.conf: |-
+    #GENERAL
+    daemonize no
+    tcp-backlog 511
+    timeout 0
+    tcp-keepalive 60
+    loglevel notice
+    databases 16
+    slave-serve-stale-data yes
+    #slave只读
+    slave-read-only yes
+    #not use default
+    repl-disable-tcp-nodelay yes
+    slave-priority 100
+    lua-time-limit 5000
+    #打开redis集群
+    cluster-enabled no
+    #节点互连超时的阀值
+    cluster-node-timeout 15000
+    cluster-migration-barrier 1
+    slowlog-log-slower-than 10000
+    slowlog-max-len 128
+    notify-keyspace-events ""
+    hash-max-ziplist-entries 512
+    hash-max-ziplist-value 64
+    list-max-ziplist-entries 512
+    list-max-ziplist-value 64
+    set-max-intset-entries 512
+    zset-max-ziplist-entries 128
+    zset-max-ziplist-value 64
+    activerehashing yes
+    client-output-buffer-limit normal 0 0 0
+    client-output-buffer-limit slave 256mb 64mb 60
+    client-output-buffer-limit pubsub 32mb 8mb 60
+    hz 10
+    #绑定IP
+    bind 0.0.0.0
+    #监听tcp端口  
+    port 6379
+    dir /redis-persistence-data
+    #最大可用内存  
+    maxmemory 10gb
+    #内存耗尽时采用的淘汰策略:  
+    # volatile-lru -> remove the key with an expire set using an LRU algorithm  
+    # allkeys-lru -> remove any key accordingly to the LRU algorithm  
+    # volatile-random -> remove a random key with an expire set  
+    # allkeys-random -> remove a random key, any key  
+    # volatile-ttl -> remove the key with the nearest expire time (minor TTL)  
+    # noeviction -> don't expire at all, just return an error on write operations  
+    maxmemory-policy volatile-lru  
+    #aof存储文件  
+    #appendfilename "appendonly-6379.aof"  
+    #rdb文件,只用于动态添加slave过程  
+    dbfilename dump-6380.rdb  
+    #cluster配置文件(启动自动生成)  
+    #cluster-config-file nodes-6379.conf  
+    #部署在同一机器的redis实例，把<span style="font-size: 1em; line-height: 1.5;">auto-aof-rewrite搓开，防止瞬间fork所有redis进程做rewrite,占用大量内存</span>  
+    #auto-aof-rewrite-percentage 80-100 
+    appendonly no
+    save 900 1
+    save 300 10
+    save 60 10000
+    rename-command FLUSHALL ""

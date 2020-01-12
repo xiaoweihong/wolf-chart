@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: arcee-capture-config
+  namespace: wolf
+data:
+  arcee.json: |
+    {
+        "Debug": true,
+        "VrrpAddr": "192.168.100.118:30851",
+        "UseVrrp": true,
+        "HttpServiceAddr": "0.0.0.0:8501",
+        "GrpcServerAddr": "0.0.0.0:8502",
+        "WeedConfig": {
+            "AsyncConfig":{
+                "Enable": true,
+                "FidChanLen": 100,
+                "JobChanLen": 10000,
+                "JobNums": 10
+            },
+            "Master": "capture-seaweedfs-service-master.wolf.svc.cluster.local:9333",
+            "Ttl": "5M",
+            "MaxMB": 5
+        },
+        "RedisConfig": {
+            "Addrs": [
+                "127.0.0.1:6379"
+            ],
+            "SingleNode": true
+        },
+        "CacheTTL": 0
+    }
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: arcee-register-config
+  namespace: wolf
+data:
+  arcee.json: |
+    {
+        "Debug": true,
+        "VrrpAddr": "192.168.100.118:30751",
+        "UseVrrp": true,
+        "HttpServiceAddr": "0.0.0.0:7501",
+        "GrpcServerAddr": "0.0.0.0:7502",
+        "WeedConfig": {
+            "AsyncConfig":{
+                "Enable": true,
+                "FidChanLen": 100,
+                "JobChanLen": 10000,
+                "JobNums": 10
+            },
+            "Master": "register-seaweedfs-service-master.wolf.svc.cluster.local:5333",
+            "MaxMB": 5
+        },
+        "RedisConfig": {
+            "Addrs": [
+                "127.0.0.1:6379"
+            ],
+            "SingleNode": true
+        },
+        "CacheTTL": 0
+    }
+

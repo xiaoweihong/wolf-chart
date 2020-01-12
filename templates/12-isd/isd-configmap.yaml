@@ -1,0 +1,156 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: isd-config
+  namespace: wolf
+data:
+  isdconfig.txt: |
+    {
+        "StreamToolsConfig":{
+            "Port":"7070"
+        },
+        "ImageSaveServiceConfig":{
+            "IsOpen":true,
+            "ConfigType":1,
+            "ConfigInfo":{
+                "Host":"arcee-capture-service.wolf.svc.cluster.local:8502",
+                "TimeoutSecond":3,
+                "ConnectNumber":5
+            }
+        },
+        "MatrixServiceConfig":{
+            "IsOpen":true,
+            "Addr":"http://ingress-nginx.ingress-nginx.svc.cluster.local:80/vse/face/rec/image",
+            "StructuredAddr":"http://ingress-nginx.ingress-nginx.svc.cluster.local:80/vse/vehicle/rec/image",
+            "ConnectNumber":10,
+            "TimeoutSecond":5,
+            "TryTimes":3
+        },
+        "SingleObjectNodeConfig":{
+            "MaxThread":100,
+            "Context":{
+                "SessionId":"single_face",
+                "Functions":[
+                    200
+                ],
+                "Type":2,
+                "Params":{
+                    "detect_mode":"1"
+                }
+            },
+            "StructuredContext":{
+                "SessionId":"single_object",
+                "Functions":[
+                    100
+                ],
+                "Type":2,
+                "Params":{
+                    "detect_mode":"1"
+                }
+            }
+        },
+        "ImageStorageNodeConfig":{
+            "ImageSaveMaxThread":100
+        },
+        "KafkaInputNodeConfig":{
+            "Brokers":[
+                "bootstrap.kafka.svc.cluster.local:9092"
+            ],
+            "Topics":[
+                "face-importer"
+            ],
+            "Group":"g1",
+            "MaxFetchBytes":"104857600",
+            "SendMessageTimeout":5
+        },
+        "KafkaOutputNodeConfig":{
+            "KafkaAddress":[
+                "bootstrap.kafka.svc.cluster.local:9092"
+            ],
+            "KafkaTopic":"index-vehicle2",
+            "MaxMessageBytes":"104857600",
+            "KafkaSentMaxThread":100,
+            "IsCompression":false
+        }
+    }
+  isd.json: |
+    {
+        "Blocks": [
+          {
+            "Id": "1",
+            "Type": "IsdKafkaInput",
+            "Rule": null,
+            "Position": {
+              "X": 540,
+              "Y": 80
+            }
+          },
+          {
+            "Id": "2",
+            "Type": "IsdInputHub",
+            "Rule": null,
+            "Position": {
+              "X": 540,
+              "Y": 160
+            }
+          },
+          {
+            "Id": "3",
+            "Type": "SingleObject",
+            "Rule": null,
+            "Position": {
+              "X": 540,
+              "Y": 240
+            }
+          },
+          {
+            "Id": "4",
+            "Type": "ImageStorage",
+            "Rule": null,
+            "Position": {
+              "X": 540,
+              "Y": 320
+            }
+          },
+          {
+            "Id": "5",
+            "Type": "IsdKafkaOutput",
+            "Rule": null,
+            "Position": {
+              "X": 540,
+              "Y": 400
+            }
+          }
+        ],
+        "Connections": [
+          {
+            "Id": "1001",
+            "FromId": "1",
+            "FromRoute": "isdmessagehubout",
+            "ToId": "2",
+            "ToRoute": "in"
+          },
+          {
+            "Id": "1002",
+            "FromId": "2",
+            "FromRoute": "fcn_align_out",
+            "ToId": "3",
+            "ToRoute": "in"
+          },
+          {
+            "Id": "1003",
+            "FromId": "3",
+            "FromRoute": "image_storage_out",
+            "ToId": "4",
+            "ToRoute": "in"
+          },
+          {
+            "Id": "1004",
+            "FromId": "4",
+            "FromRoute": "urlresultout",
+            "ToId": "5",
+            "ToRoute": "in"
+          }
+    
+        ]
+      }

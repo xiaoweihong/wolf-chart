@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: archimedes
+  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: archimedes
+  template:
+    metadata:
+      labels:
+        name: archimedes
+    spec:
+      containers:
+      - name: archimedes
+        image: dockerhub.deepglint.com/wolf/archimedes:0.8.29
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 6666
+        command: ["./archimedes"]
+        args:
+        - "-stderrthreshold=0"
+        - "-logtostderr=true"
+        - "-v=4"
+        volumeMounts:
+        - name: archimedes-config
+          mountPath: /archimedes/config
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+        - name: archimedes-config
+          configMap:
+            name: archimedes-config
+        - name: localtime
+          hostPath:
+            path: /etc/localtime

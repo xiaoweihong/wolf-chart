@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: volume-hostpath-deployment
+  namespace: deepdata-warwolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: volume-hostpath-seaweedfs-service
+  template:
+    metadata:
+      labels:
+        name: volume-hostpath-seaweedfs-service
+    spec:
+      containers:
+      - name: seaweedfs-volume
+        image: chrislusf/seaweedfs:1.44
+        ports:
+        - name: http
+          containerPort: 9300
+        - name: grpc
+          containerPort: 19300
+        args:
+          - "volume"
+          - "-mserver=master-seaweedfs-service.deepdata-warwolf.svc.cluster.local:9333"
+          - "-ip=volume-hostpath-seaweedfs-service.deepdata-warwolf.svc.cluster.local"
+          - "-port=9300"
+          - "-publicUrl=192.168.2.113:30300"
+          - "-port.public=8000"
+          - "-dir=/data"
+        volumeMounts:
+        - mountPath: /data
+          name: volume-data-pvc
+      volumes:
+      - name: volume-data-pvc
+        persistentVolumeClaim:
+          claimName: hostpath-pvc
+
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: volume-nfs-deployment
+  namespace: deepdata-warwolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: volume-nfs-seaweedfs-service
+  template:
+    metadata:
+      labels:
+        name: volume-nfs-seaweedfs-service
+    spec:
+      containers:
+      - name: seaweedfs-volume
+        image: chrislusf/seaweedfs:1.44
+        ports:
+        - name: http
+          containerPort: 9301
+        - name: grpc
+          containerPort: 19301
+        args:
+          - "volume"
+          - "-mserver=master-seaweedfs-service.deepdata-warwolf.svc.cluster.local:9333"
+          - "-ip=volume-nfs-seaweedfs-service.deepdata-warwolf.svc.cluster.local"
+          - "-port=9301"
+          - "-publicUrl=192.168.2.113:30301"
+          - "-port.public=8000"
+          - "-dir=/data"
+        volumeMounts:
+        - mountPath: /data
+          name: volume-data-pvc
+      volumes:
+      - name: volume-data-pvc
+        persistentVolumeClaim:
+          claimName: nfs-pvc

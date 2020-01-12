@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: athena
+  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: athena
+  template:
+    metadata:
+      labels:
+        name: athena
+    spec:
+      containers:
+      - name: athena
+        image: dockerhub.deepglint.com/wolf/athena:v0.12.7
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 2013
+        command: ["./athena"]
+        args:
+        - "-stderrthreshold=0"
+        - "-logtostderr=true"
+        - "-v=8"
+        volumeMounts:
+        - name: athena-run-config
+          mountPath: /athena/athenadir/config
+        - name: athena-style-config
+          mountPath: /athena/athenadir/exportsqltoexceltask/style
+        - name: athena-tmp
+          mountPath: /platformData/athenadir/tmp
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+        - name: athena-run-config
+          configMap:
+            name: athena-config
+        - name: athena-style-config
+          configMap:
+            name: athena-style
+        - name: athena-tmp
+          hostPath:
+            path: /platformData/athenadir/tmp
+        - name: localtime
+          hostPath:
+            path: /etc/localtime

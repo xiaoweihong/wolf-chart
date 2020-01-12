@@ -1,0 +1,74 @@
+config:
+  data:
+    capture: |+
+      # kafka source face capture
+      source.face.capture.bootstrap.servers=bootstrap.kafka.svc.cluster.local:9092
+      source.face.capture.topics=devo-face-capture-topic
+      source.face.capture.group.id=flink-face-capture
+      source.face.capture.latest=true
+      # kafka source vehicle capture
+      source.vehicle.capture.bootstrap.servers=bootstrap.kafka.svc.cluster.local:9092
+      source.vehicle.capture.topics=devo-vehicle-capture-topic
+      source.vehicle.capture.group.id=flink-vehicle-capture
+      source.vehicle.capture.latest=true
+      # kafka source nonmotor capture
+      source.nonmotor.capture.bootstrap.servers=bootstrap.kafka.svc.cluster.local:9092
+      source.nonmotor.capture.topics=devo-nonmotor-capture-topic
+      source.nonmotor.capture.group.id=flink-nonmotor-capture
+      source.nonmotor.capture.latest=true
+      # kafka source pedestrian capture
+      source.pedestrian.capture.bootstrap.servers=bootstrap.kafka.svc.cluster.local:9092
+      source.pedestrian.capture.topics=devo-pedestrian-capture-topic
+      source.pedestrian.capture.group.id=flink-pedestrian-capture
+      source.pedestrian.capture.latest=true
+      # kafka sink vehicle capture
+      sink.vehicle.capture.bootstrap.servers=bootstrap.kafka.svc.cluster.local:9092
+      sink.vehicle.capture.topics=special-vehicle-capture-topic
+      # kafka sink nonmotor capture
+      sink.nonmotor.capture.bootstrap.servers=bootstrap.kafka.svc.cluster.local:9092
+      sink.nonmotor.capture.topics=special-nonmotor-capture-topic
+      # database statistics
+      database.statistics.driver=org.postgresql.Driver
+      database.statistics.url=jdbc:postgresql://postgres-service.wolf.svc.cluster.local:5432/statistics
+      database.statistics.username=postgres
+      database.statistics.password=Zstvgcs@9102
+      # database special
+      database.special.driver=org.postgresql.Driver
+      database.special.url=jdbc:postgresql://postgres-service.wolf.svc.cluster.local:5432/special
+      database.special.username=postgres
+      database.special.password=Zstvgcs@9102
+      database.special.interval=2000
+      # cache
+      cache.url=redis-service.wolf.svc.cluster.local
+      cache.password=
+      cache.port=6378
+      cache.db=3
+    warn: |+
+      # kafka source face warn
+      source.face.warn.bootstrap.servers=bootstrap.kafka.svc.cluster.local:9092
+      source.face.warn.topics=devo-face-warn-topic
+      source.face.warn.group.id=flink-face-warn
+      source.face.warn.latest=true
+      # kafka source vehicle warn
+      source.vehicle.warn.bootstrap.servers=bootstrap.kafka.svc.cluster.local:9092
+      source.vehicle.warn.topics=devo-vehicle-warn-topic
+      source.vehicle.warn.group.id=flink-vehicle-warn
+      source.vehicle.warn.latest=true
+      # database statistics
+      database.statistics.driver=org.postgresql.Driver
+      database.statistics.url=jdbc:postgresql://postgres-service.wolf.svc.cluster.local:5432/statistics
+      database.statistics.username=postgres
+      database.statistics.password=Zstvgcs@9102
+      # cache
+      cache.url=redis-service.wolf.svc.cluster.local
+      cache.password=
+      cache.port=6378
+      cache.db=3
+
+application:
+  - name: capture
+    repository: dockerhub.deepglint.com/deepface/flink-capture
+    tag: latest
+  - name: warn
+    repository: dockerhub.deepglint.com/deepface/flink-warn
+    tag: latest

@@ -1,0 +1,272 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seaweedfs-capture-master
+  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: capture-seaweedfs-master
+  template:
+    metadata:
+      labels:
+        name: capture-seaweedfs-master 
+    spec:
+      containers:
+      - name: capture-seaweedfs-master
+        image: dockerhub.deepglint.com/wolf/seaweedfs:1.48
+        ports:
+        - name: http
+          containerPort: 9333
+        - name: grpc
+          containerPort: 19333
+        args:
+        - "-alsologtostderr"
+        - "master"
+        - "-ip=capture-seaweedfs-service-master.wolf.svc.cluster.local"
+        - "-mdir=/data"
+        - "-port=9333"
+        volumeMounts:
+        - name: capture-master-data
+          mountPath: /data
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+      - name: capture-master-data
+        hostPath:
+          path: /platformData/weedfs/capture/master
+      - name: localtime
+        hostPath:
+          path: /etc/localtime
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seaweedfs-capture-volume00
+  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: capture-seaweedfs-volume00
+  template:
+    metadata:
+      labels:
+        name: capture-seaweedfs-volume00
+    spec:
+      containers:
+      - name: capture-seaweedfs-volume00
+        image: dockerhub.deepglint.com/wolf/seaweedfs:1.48
+        ports:
+        - name: http
+          containerPort: 9300
+        - name: grpc
+          containerPort: 19300
+        args:
+        - "-alsologtostderr"
+        - "volume"
+        - "-mserver=capture-seaweedfs-service-master.wolf.svc.cluster.local:9333"
+        - "-ip=capture-seaweedfs-service-volume00.wolf.svc.cluster.local"
+        - "-publicUrl=192.168.100.118:30300"
+        - "-dir=/data"
+        - "-port=9300"
+        - "-max=55"
+        volumeMounts:
+        - name: capture-data-volume00
+          mountPath: /data
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+      - name: capture-data-volume00
+        hostPath:
+          path: /platformData/weedfs/capture/volume00
+      - name: localtime
+        hostPath:
+          path: /etc/localtime
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seaweedfs-capture-volume01
+  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: capture-seaweedfs-volume01
+  template:
+    metadata:
+      labels:
+        name: capture-seaweedfs-volume01
+    spec:
+      containers:
+      - name: capture-seaweedfs-master
+        image: dockerhub.deepglint.com/wolf/seaweedfs:1.48
+        ports:
+        - name: http
+          containerPort: 9301
+        - name: grpc
+          containerPort: 19301
+        args:
+        - "-alsologtostderr"
+        - "volume"
+        - "-mserver=capture-seaweedfs-service-master.wolf.svc.cluster.local:9333"
+        - "-ip=capture-seaweedfs-service-volume01.wolf.svc.cluster.local"
+        - "-publicUrl=192.168.100.118:30301"
+        - "-dir=/data"
+        - "-port=9301"
+        - "-max=55"
+        volumeMounts:
+        - name: capture-data-volume01
+          mountPath: /data
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+      - name: capture-data-volume01
+        hostPath:
+          path: /platformData/weedfs/capture/volume01
+      - name: localtime
+        hostPath:
+          path: /etc/localtime
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seaweedfs-register-master
+  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: register-seaweedfs-master
+  template:
+    metadata:
+      labels:
+        name: register-seaweedfs-master 
+    spec:
+      containers:
+      - name: register-seaweedfs-master
+        image: dockerhub.deepglint.com/wolf/seaweedfs:1.48
+        ports:
+        - name: http
+          containerPort: 5333
+        - name: grpc
+          containerPort: 15333
+        args:
+        - "-alsologtostderr"
+        - "master"
+        - "-ip=register-seaweedfs-service-master.wolf.svc.cluster.local"
+        - "-mdir=/data"
+        - "-port=5333"
+        volumeMounts:
+        - name: register-master-data
+          mountPath: /data
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+      - name: register-master-data
+        hostPath:
+          path: /platformData/weedfs/register/master
+      - name: localtime
+        hostPath:
+          path: /etc/localtime
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seaweedfs-register-volume00
+  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: register-seaweedfs-volume00
+  template:
+    metadata:
+      labels:
+        name: register-seaweedfs-volume00
+    spec:
+      containers:
+      - name: register-seaweedfs-volume00
+        image: dockerhub.deepglint.com/wolf/seaweedfs:1.48
+        ports:
+        - name: http
+          containerPort: 5300
+        - name: grpc
+          containerPort: 15300
+        args:
+        - "-alsologtostderr"
+        - "volume"
+        - "-mserver=register-seaweedfs-service-master.wolf.svc.cluster.local:5333"
+        - "-ip=register-seaweedfs-service-volume00.wolf.svc.cluster.local"
+        - "-publicUrl=192.168.100.118:30500"
+        - "-dir=/data"
+        - "-port=5300"
+        - "-max=55"
+        volumeMounts:
+        - name: register-data-volume00
+          mountPath: /data
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+      - name: register-data-volume00
+        hostPath:
+          path: /platformData/weedfs/register/volume00
+      - name: localtime
+        hostPath:
+          path: /etc/localtime
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seaweedfs-register-volume01
+  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: register-seaweedfs-volume01
+  template:
+    metadata:
+      labels:
+        name: register-seaweedfs-volume01
+    spec:
+      containers:
+      - name: register-seaweedfs-volume01
+        image: dockerhub.deepglint.com/wolf/seaweedfs:1.48
+        ports:
+        - name: http
+          containerPort: 5301
+        - name: grpc
+          containerPort: 15301
+        args:
+        - "-alsologtostderr"
+        - "volume"
+        - "-mserver=register-seaweedfs-service-master.wolf.svc.cluster.local:5333"
+        - "-ip=register-seaweedfs-service-volume01.wolf.svc.cluster.local"
+        - "-publicUrl=192.168.100.118:31501"
+        - "-dir=/data"
+        - "-port=5301"
+        - "-max=55"
+        volumeMounts:
+        - name: register-data-volume01
+          mountPath: /data
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+      - name: register-data-volume01
+        hostPath:
+          path: /platformData/weedfs/register/volume01
+      - name: localtime
+        hostPath:
+          path: /etc/localtime

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: saxvehicle-service
+  namespace: wolf
+spec:
+  type: NodePort
+  selector:
+    name: saxvehicle
+  ports:
+  - name: http
+    port: 8084
+    targetPort: 8084
+    nodePort: 30084

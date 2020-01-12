@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eventpoxy
+  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: eventpoxy
+  template:
+    metadata:
+      labels:
+        name: eventpoxy
+    spec:
+      containers:
+      - name: eventpoxy
+        image: dockerhub.deepglint.com/wolf/eventpoxy:0.1.2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 1919
+        command: ["./eventpoxy"]
+        args:
+        - "-config=config/config.json"
+        volumeMounts:
+        - name: eventpoxy-config
+          mountPath: /eventpoxy/config
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+        - name: eventpoxy-config
+          configMap:
+            name: eventpoxy-config
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
