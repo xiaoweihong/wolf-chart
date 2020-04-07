@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: loki-service
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 spec:
   type: NodePort
   selector:

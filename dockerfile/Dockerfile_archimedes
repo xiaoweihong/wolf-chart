@@ -1,0 +1,4 @@
+FROM alpine
+WORKDIR /archimedes
+COPY . ./
+CMD ["./archimedes", "-stderrthreshold=0", "-logtostderr=true", "-v=4"]

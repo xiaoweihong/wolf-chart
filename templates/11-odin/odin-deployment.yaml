@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: odin
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: odin
-        image: dockerhub.deepglint.com/wolf/odin:1.0.2
+        image: dockerhub.deepglint.com/wolf/odin:1.2.2
         imagePullPolicy: IfNotPresent
         ports:
         - name: http

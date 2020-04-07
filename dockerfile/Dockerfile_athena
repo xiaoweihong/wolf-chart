@@ -1,0 +1,4 @@
+FROM alpine
+WORKDIR /athena
+COPY . ./
+CMD ["./athena", "-stderrthreshold=0", "-logtostderr=true", "-v=4"]

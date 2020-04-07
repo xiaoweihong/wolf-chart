@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: archimedes
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: archimedes
-        image: dockerhub.deepglint.com/wolf/archimedes:0.8.29
+        image: dockerhub.deepglint.com/wolf/archimedes:{{.Values.archimedes.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http

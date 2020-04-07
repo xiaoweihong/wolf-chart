@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iris
+  namespace: {{.Values.namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: iris
+  template:
+    metadata:
+      labels:
+        name: iris
+    spec:
+      containers:
+      - name: iris
+        image: dockerhub.deepglint.com/wolf/iris:{{.Values.iris.imageTag}}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8083
+        command: ["./iris"]
+        args:
+        - "-stderrthreshold=0"
+        - "-logtostderr=true"
+        - "-v=4"
+        volumeMounts:
+        - name: iris-config
+          mountPath: /iris/config.json
+          subPath: config.json
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+        - name: iris-config
+          configMap:
+            name: iris-config
+        - name: localtime
+          hostPath:
+            path: /etc/localtime

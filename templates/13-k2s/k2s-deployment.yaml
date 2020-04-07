@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: k2s
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: k2s
-        image: dockerhub.deepglint.com/wolf/k2s:0.2.8
+        image: dockerhub.deepglint.com/wolf/k2s:{{.Values.k2s.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http

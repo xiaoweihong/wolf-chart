@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: croatia
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: croatia
-        image: dockerhub.deepglint.com/wolf/croatia:2.0.1
+        image: dockerhub.deepglint.com/wolf/croatia:{{.Values.croatia.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -27,7 +27,8 @@ spec:
         - "-v=8"
         volumeMounts:
         - name: croatia-config
-          mountPath: /croatia/config
+          mountPath: /croatia/config/croatia_config.txt
+          subPath: croatia_config.txt
         - name: croatia-upload
           mountPath: /platformData/loki/upload
         - name: localtime

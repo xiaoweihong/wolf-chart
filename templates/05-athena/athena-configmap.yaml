@@ -4,275 +4,123 @@ metadata:
   name: athena-config
   namespace: wolf
 data:
-  vehicle_first_appearance_config.txt: |
+  config.json: |
     {
-      "TsStep": 21600000
-    }
-  
-  config.txt: |
-    {
-      "ListenAddr": "0.0.0.0:2013",
-      "MaxTaskNum": 500,
-      "AthenaTmpDir": "/platformData/athenadir/tmp/",
-      "StatusTmpDir": "/platformData/athenadir/tmp/status/",
-      "MaxQueueLength":30,
-      "MaxRunningTasks":10
-    }
-  
-  export_sql_to_excel_with_param_beyond_db_config.txt: |
-    {
-      "PageSize": 2000,
-      "MaxGoroutinesToLoadPic": 10,
-      "MaxRecordCountPerExcel": 2000,
-      "MaxTotalRecords": 10000,
-      "ExportPath": "/platformData/athenadir/tmp/exportsqltoexcelwithparambeyonddbtask/result",
-      "TempPath": "/platformData/athenadir/tmp/exportsqltoexcelwithparambeyonddbtask"
-    }
-  
-  vehicle_fake_plate_config.txt: |
-    {
-      "TsStep": 21600000,
-      "MaxSpeed": 132,
-      "PositionThreshold": 50,
-      "DistanceThreshold": 2000
-    }
-  
-  dbservice_config.txt: |
-    {
-      "IsOpen": false,
-      "ConfigType": "xorm",
-      "ConfigInfo": {
-        "DBType": "postgres",
-        "Host": "postgres-service.wolf.svc.cluster.local",
-        "Port": 5432,
-        "UserName": "postgres",
-        "PassWord": "Zstvgcs@9102",
-        "DBName": "deepface_v5",
-        "MaxOpenConnsPerClient": 2,
-        "MaxIdleConnsPerClient": 2,
-        "MaxLifeTimeSeconds": 60,
-        "IsShowSQL": false
-      }
-    }
-  
-  person_frequency_analysis_config.txt: |
-    {
-      "TsStep": 21600000
-    }
-  
-  vehicle_area_collision_config.txt: |
-    {
-    }
-
-  person_area_collision_config.txt: |
-  
-  platform_sync_gb_config.txt: |
-    {
-      "Uri": "http://127.0.0.1:8000/dgsip/catalog",
-      "LastUpdateKey": "helloplatformsynclastupdatekey",
-      "Timeout": 30
-    }
-  
-  vehicle_dayinnightout_config.txt: |
-    {
-      "TsStep": 3600000,
-      "Comment": "default: 3600000 = 1h"
-    }
-  vehicle_frequency_analysis_config.txt: |
-    {
-      "TsStep": 21600000
-    }
-  
-  export_sql_to_excel_config.txt: |
-    {
-      "PageSize": 2000,
-      "MaxGoroutinesToLoadPic": 10,
-      "MaxRecordCountPerExcel": 2000,
-      "MaxTotalRecords": 10000,
-      "ExportPath": "/platformData/athenadir/tmp/exportsqltoexceltask/result",
-      "TempPath": "/platformData/athenadir/tmp/exportsqltoexceltask"
-    }
-  
-  
-  platform_sync_pvg_config.txt: |
-    {
-      "Uri": "http://127.0.0.1:7457/vse/catalog",
-      "LastUpdateKey": "pvghelloplatformsynclastupdatekey",
-      "Timeout": 30
-    }
-
----
-
-
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: athena-style
-  namespace: wolf
-data:
-  default_body.json: |
-    {
-      "border": [
-        {
-          "type": "left",
-          "color": "#000000",
-          "style": 1
+        "AthenaBaseConfig":{
+            "ListenAddr":"0.0.0.0:2013",
+            "MaxTaskNum":500,
+            "DictAddr":{
+                "BrandAddr":"./athenadir/dict/INDEX_BRAND.json",
+                "FaceAddr":"./athenadir/dict/INDEX_FACE.json",
+                "LicensePlateAddr":"./athenadir/dict/INDEX_LICENSE_PLATE.json",
+                "MotorAddr":"./athenadir/dict/INDEX_MOTOR.json",
+                "NonMotorAddr":"./athenadir/dict/INDEX_NON_MOTOR.json",
+                "PedestrianAddr":"./athenadir/dict/INDEX_PEDESTRIAN.json"
+            },
+            "AthenaTmpDir":"/platformData/athenadir/tmp/",
+            "StatusTmpDir":"/platformData/athenadir/tmp/status/",
+            "MaxQueueLength":30,
+            "MaxRunningTasks":20
         },
-        {
-          "type": "right",
-          "color": "#000000",
-          "style": 1
+        "DBServiceConfig":{
+            "IsOpen":false,
+            "ConfigType":"xorm",
+            "ConfigInfo":{
+                "DBType":"postgres",
+                "Host":"postgres-service.wolf.svc.cluster.local",
+                "Port":5432,
+                "UserName":"postgres",
+                "PassWord":"Zstvgcs@9102",
+                "DBName":"deepface_v5",
+                "MaxOpenConnsPerClient":2,
+                "MaxIdleConnsPerClient":2,
+                "MaxLifeTimeSeconds":60,
+                "IsShowSQL":false
+            }
         },
-        {
-          "type": "top",
-          "color": "#000000",
-          "style": 1
-        },
-        {
-          "type": "bottom",
-          "color": "#000000",
-          "style": 1
+        "RankerConfig":{
+            "WarnRankerAddr":"http://fseapi-service.fse.svc.cluster.local:8000/x-api/v1",
+            "WarnRankerConnectNumber":10,
+            "TimeoutSecond":5,
+            "TryTimes":3
         }
-      ],
-    
-      "alignment": {
-        "horizontal": "center",
-        "vertical": "center",
-        "wrap_text":false
-      },
-    
-      "font": {
-        "bold": false,
-        "family": "Microsoft YaHei Light",
-        "size": 12,
-        "color": "#000000"
-      }
     }
-  default_head.json: |
+  tasks_config.json: |
     {
-      "border": [
-        {
-          "type": "left",
-          "color": "#000000",
-          "style": 1
+        "ExportTaskConfig":{
+            "MaxGoroutinesToLoadPic":10,
+            "LoadPicTimeout":20,
+            "MaxRecordsCountPerExcel":2000,
+            "MaxTotalRecords":10000,
+            "ExportPath":"/platformData/athenadir/tmp/exporttask/result",
+            "TempPath":"/platformData/athenadir/tmp/exporttask"
         },
-        {
-          "type": "right",
-          "color": "#000000",
-          "style": 1
+        "ExportSql2ExcelTaskConfig":{
+            "PageSize":2000,
+            "MaxGoroutinesToLoadPic":10,
+            "MaxRecordCountPerExcel":2000,
+            "MaxTotalRecords":10000,
+            "ExportPath":"/platformData/athenadir/tmp/exportsqltoexceltask/result",
+            "TempPath":"/platformData/athenadir/tmp/exportsqltoexceltask"
         },
-        {
-          "type": "top",
-          "color": "#000000",
-          "style": 1
+        "ExportSql2ExcelWithParamBeyondDbTaskConfig":{
+            "PageSize":2000,
+            "MaxGoroutinesToLoadPic":10,
+            "MaxRecordCountPerExcel":2000,
+            "MaxTotalRecords":10000,
+            "ExportPath":"/platformData/athenadir/tmp/exportsqltoexcelwithparambeyonddbtask/result",
+            "TempPath":"/platformData/athenadir/tmp/exportsqltoexcelwithparambeyonddbtask"
         },
-        {
-          "type": "bottom",
-          "color": "#000000",
-          "style": 1
+        "PersonAreaCollisionTaskConfig":{
+    
+        },
+        "PersonFrequencyAnalysisTaskConfig":{
+            "TsStep":21600000
+        },
+        "PersonRepoCollisionTaskConfig":{
+            "Limit":100,
+            "RankerGetFeatureMaxThread":10
+        },
+        "PersonTrailMatchTaskConfig":{
+            "TsStep":21600000
+        },
+        "PlatformSyncGbTaskConfig":{
+            "Uri":"http://{{.Values.HOSTIP}}:8000/dgsip/catalog",
+            "LastUpdateKey":"helloplatformsynclastupdatekey",
+            "Timeout":600
+        },
+        "PlatformSyncPVGTaskConfig":{
+            "Uri":"http://{{.Values.HOSTIP}}:7457/vse/catalog",
+            "LastUpdateKey":"pvghelloplatformsynclastupdatekey",
+            "Timeout":600
+        },
+        "VehicleAreaCollisionTaskConfig":{
+    
+        },
+        "VehicleDayInNightOutTaskConfig":{
+            "TsStep":3600000,
+            "Comment":"default: 3600000 = 1h"
+        },
+        "VehicleFakePlateTaskConfig":{
+            "TsStep":21600000,
+            "MaxSpeed":132,
+            "PositionThreshold":50,
+            "DistanceThreshold":2000
+        },
+        "VehicleFirstAppearanceTaskConfig":{
+            "TsStep":21600000
+        },
+        "VehicleFrequencyAnalysisTaskConfig":{
+            "TsStep":21600000
+        },
+        "VehicleHiddenTaskConfig":{
+            "TsStep":21600000,
+            "DaysBeforeEvent":4,
+            "DaysAfterEvent":3,
+            "MinAppearanceTimesBeforeEvent":2,
+            "MaxHiddenCoefficient":0.3
+        },
+        "VehicleTrailMatchTaskConfig":{
+            "TsStep":21600000
         }
-      ],
-    
-      "fill": {
-        "type": "pattern",
-        "color": [
-          "#E0EBF5"
-        ],
-        "pattern": 1
-      },
-    
-      "alignment": {
-        "horizontal": "center",
-        "vertical": "center"
-      },
-    
-      "font": {
-        "bold": false,
-        "family": "黑体",
-        "size": 12,
-        "color": "#000000"
-      }
-    }
-  image_body.json: |
-    {
-      "border": [
-        {
-          "type": "left",
-          "color": "#000000",
-          "style": 1
-        },
-        {
-          "type": "right",
-          "color": "#000000",
-          "style": 1
-        },
-        {
-          "type": "top",
-          "color": "#000000",
-          "style": 1
-        },
-        {
-          "type": "bottom",
-          "color": "#000000",
-          "style": 1
-        }
-      ],
-    
-      "alignment": {
-        "horizontal": "center",
-        "vertical": "center",
-        "wrap_text":true
-      },
-    
-      "font": {
-        "bold": false,
-        "family": "Microsoft YaHei Light",
-        "size": 12,
-        "color": "#000000"
-      }
-    }
-  image_head.json: |
-    {
-      "border": [
-        {
-          "type": "left",
-          "color": "#000000",
-          "style": 1
-        },
-        {
-          "type": "right",
-          "color": "#000000",
-          "style": 1
-        },
-        {
-          "type": "top",
-          "color": "#000000",
-          "style": 1
-        },
-        {
-          "type": "bottom",
-          "color": "#000000",
-          "style": 1
-        }
-      ],
-    
-      "fill": {
-        "type": "pattern",
-        "color": [
-          "#E0EBF5"
-        ],
-        "pattern": 1
-      },
-    
-      "alignment": {
-        "horizontal": "center",
-        "vertical": "center"
-      },
-    
-      "font": {
-        "bold": false,
-        "family": "黑体",
-        "size": 12,
-        "color": "#000000"
-      }
     }

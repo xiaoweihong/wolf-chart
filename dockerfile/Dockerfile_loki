@@ -1,0 +1,5 @@
+FROM alpine
+WORKDIR /loki
+COPY . ./
+ENV ENVIRONMENT production
+CMD ["./loki", "-stderrthreshold=0", "-logtostderr=true", "-v=4"]

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: isd-config
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 data:
   isdconfig.txt: |
     {
@@ -73,84 +73,3 @@ data:
             "IsCompression":false
         }
     }
-  isd.json: |
-    {
-        "Blocks": [
-          {
-            "Id": "1",
-            "Type": "IsdKafkaInput",
-            "Rule": null,
-            "Position": {
-              "X": 540,
-              "Y": 80
-            }
-          },
-          {
-            "Id": "2",
-            "Type": "IsdInputHub",
-            "Rule": null,
-            "Position": {
-              "X": 540,
-              "Y": 160
-            }
-          },
-          {
-            "Id": "3",
-            "Type": "SingleObject",
-            "Rule": null,
-            "Position": {
-              "X": 540,
-              "Y": 240
-            }
-          },
-          {
-            "Id": "4",
-            "Type": "ImageStorage",
-            "Rule": null,
-            "Position": {
-              "X": 540,
-              "Y": 320
-            }
-          },
-          {
-            "Id": "5",
-            "Type": "IsdKafkaOutput",
-            "Rule": null,
-            "Position": {
-              "X": 540,
-              "Y": 400
-            }
-          }
-        ],
-        "Connections": [
-          {
-            "Id": "1001",
-            "FromId": "1",
-            "FromRoute": "isdmessagehubout",
-            "ToId": "2",
-            "ToRoute": "in"
-          },
-          {
-            "Id": "1002",
-            "FromId": "2",
-            "FromRoute": "fcn_align_out",
-            "ToId": "3",
-            "ToRoute": "in"
-          },
-          {
-            "Id": "1003",
-            "FromId": "3",
-            "FromRoute": "image_storage_out",
-            "ToId": "4",
-            "ToRoute": "in"
-          },
-          {
-            "Id": "1004",
-            "FromId": "4",
-            "FromRoute": "urlresultout",
-            "ToId": "5",
-            "ToRoute": "in"
-          }
-    
-        ]
-      }

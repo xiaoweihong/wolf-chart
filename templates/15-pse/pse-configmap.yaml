@@ -9,7 +9,7 @@ data:
       "ListenAddr": "0.0.0.0:1989",
       "RedisServiceConfig": {
         "Addr": "redis-service.wolf.svc.cluster.local:6379",
-        "Passward": "",
+        "Passward": "deepglint@2013",
         "DB": 2
       }
     }

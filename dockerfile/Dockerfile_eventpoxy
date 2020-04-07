@@ -1,0 +1,4 @@
+FROM alpine
+WORKDIR /eventpoxy
+COPY . ./
+CMD ["./eventproxy","-config=config.json" ]

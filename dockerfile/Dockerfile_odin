@@ -1,0 +1,4 @@
+FROM alpine
+WORKDIR /odin
+COPY . ./
+CMD ["./odin", "-stderrthreshold=0", "-logtostderr=true", "-v=4"]

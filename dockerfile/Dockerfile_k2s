@@ -1,0 +1,4 @@
+FROM alpine
+WORKDIR /k2s
+COPY . ./
+CMD ["./k2s", "-stderrthreshold=0", "-logtostderr=true", "-v=4"]

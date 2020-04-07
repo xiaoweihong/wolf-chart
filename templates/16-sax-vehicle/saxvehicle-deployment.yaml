@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: saxvehicle
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: saxvehicle
-        image: dockerhub.deepglint.com/wolf/sax_vehicle:1.1
+        image: dockerhub.deepglint.com/wolf/sax_vehicle:{{.Values.sax_vehicle.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http

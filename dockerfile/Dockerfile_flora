@@ -1,0 +1,5 @@
+FROM alpine
+WORKDIR /flora
+COPY . ./
+ENV ENVIRONMENT production
+CMD ["./flora", "-level=0"]

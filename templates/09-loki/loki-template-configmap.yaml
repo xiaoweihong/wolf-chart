@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: loki-template-config 
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 data:
   dc84.json: | 
     {
@@ -15,7 +15,7 @@ data:
             "passwd":"Admin123",
             "camera":"DC84",
             "kafkaconfig":{
-                "kafka_addr":"192.168.100.118:32400",
+                "kafka_addr":"bootstrap.kafka.svc.cluster.local:9092",
                 "kafka_topic":"face-importer",
                 "kafka_max_size_bytes":"104857600"
             },
@@ -43,7 +43,7 @@ data:
             "back_ground_width":"1920",
             "back_ground_height":"1080",
             "kafkaconfig":{
-                "kafka_addr":"192.168.100.118:32400",
+                "kafka_addr":"bootstrap.kafka.svc.cluster.local:9092",
                 "kafka_topic":"face-importer",
                 "kafka_max_size_bytes":"104857600"
                           },
@@ -66,7 +66,7 @@ data:
             "user_name":"123",
             "passwd":"123",
             "kafkaconfig":{
-                "kafka_addr":"192.168.100.118:32400",
+                "kafka_addr":"bootstrap.kafka.svc.cluster.local:9092",
                 "kafka_topic":"face-importer",
                 "kafka_max_size_bytes":"50000000"
                           },
@@ -90,12 +90,12 @@ data:
         },
         "DataType":"protobuf",
         "DefaultSpeed":10,
-        "ArceeAddr":"192.168.100.118:30852",
+        "ArceeAddr":"arcee-capture-service.wolf.svc.cluster.local:8502",
         "RedisConfig":{
           "Database":4,
           "ReadTimeout":1,
           "Addrs":[
-            "192.168.100.118:6379"
+            "redis-service.wolf.svc.cluster.local:6378"
           ],
           "Password":"deepglint@2013",
           "SingleNode":true,
@@ -106,7 +106,7 @@ data:
           "RedLock":null
         },
         "DefaltKafkaConsumer":{
-          "KafkaBootstrapServers":"192.168.100.118:32400",
+          "KafkaBootstrapServers":"bootstrap.kafka.svc.cluster.local:9092",
           "KafkaGroupName":"index-vehicle2",
           "KafkaTopic":[
             "index-vehicle2"
@@ -118,12 +118,12 @@ data:
           "PoolSize":300,
           "AllObject":true,
           "ReqTimeOut":10,
-          "HttpAddr":"http://192.168.100.118:38080/vse/vehicle/rec/image",
+          "HttpAddr":"http://ingress-nginx.ingress-nginx.svc.cluster.local/vse/vehicle/rec/image",
           "ConcurrenceConsumerNum":10,
           "FilterThreshold":0.5,
           "Addr":"127.0.0.1:6504",
           "FaceGrpcAddr":"127.0.0.1:6504",
-          "FaceHttpSchema":"http://192.168.100.118:38080/vse/face/rec/image",
+          "FaceHttpSchema":"http://ingress-nginx.ingress-nginx.svc.cluster.local/vse/face/rec/image",
           "FExpandConfig":{
             "Top":0.5,
             "Bottom":0.1,
@@ -164,11 +164,11 @@ data:
         "OlympusConfig":{
           "Enable":false,
           "Interval":3,
-          "Schema":"http://192.168.2.169:30233/link/v1/instances/%s/info"
+          "Schema":"http://link-service.link.svc.cluster.local:2233/link/v1/instances/%s/info"
         },
         "MatrixMode":true,
         "DeleteMode":false,
-        "DefaultKafkaAddr":"192.168.100.118:32400",
+        "DefaultKafkaAddr":"bootstrap.kafka.svc.cluster.local:9092",
         "DefaultTask":{
           "Output":{
             "Attributes":[
@@ -178,7 +178,7 @@ data:
               },
               {
                 "Key":"address",
-                "Value":"192.168.100.118:32400"
+                "Value":"bootstrap.kafka.svc.cluster.local:9092"
               }
             ],
             "SpeedLimit":1,
@@ -237,7 +237,7 @@ data:
   importer_libraF.json: | 
     {
         "Weed":{
-            "Host":"192.168.100.118:30852",
+            "Host":"arcee-capture-service.wolf.svc.cluster.local:8502",
             "IsOpen":true
         },
         "OutputSlice":[
@@ -247,7 +247,7 @@ data:
                     "MaxThread":100,
                     "KafkaTopic":"face-importer",
                     "KafkaAddress":[
-                        "192.168.100.118:32400"
+                        "bootstrap.kafka.svc.cluster.local:9092"
                     ],
                     "MaxMessageBytes":"104857600"
                 }
@@ -283,7 +283,7 @@ data:
             "user_name":"admin",
             "passwd":"admin123",
             "kafkaconfig":{
-                "kafka_addr":"192.168.100.118:32400",
+                "kafka_addr":"bootstrap.kafka.svc.cluster.local:9092",
                 "kafka_topic":"face-importer",
                 "kafka_max_size_bytes":"104857600"
                           },
@@ -305,7 +305,7 @@ data:
             "user_name":"admin",
             "passwd":"admin123",
             "kafkaconfig":{
-                "kafka_addr":"192.168.100.118:32400",
+                "kafka_addr":"bootstrap.kafka.svc.cluster.local:9092",
                 "kafka_topic":"face-importer",
                 "kafka_max_size_bytes":"104857600"
                           },
@@ -360,5 +360,3 @@ data:
     
         }
     }
-    
-            

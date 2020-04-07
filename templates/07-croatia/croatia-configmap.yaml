@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: croatia-config 
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 data:
   croatia_config.txt: | 
     {

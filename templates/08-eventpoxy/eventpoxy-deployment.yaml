@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: eventpoxy
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 1
   selector:
@@ -15,12 +15,12 @@ spec:
     spec:
       containers:
       - name: eventpoxy
-        image: dockerhub.deepglint.com/wolf/eventpoxy:0.1.2
+        image: dockerhub.deepglint.com/wolf/eventpoxy:{{.Values.eventpoxy.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
           containerPort: 1919
-        command: ["./eventpoxy"]
+        command: ["./eventproxy"]
         args:
         - "-config=config/config.json"
         volumeMounts:

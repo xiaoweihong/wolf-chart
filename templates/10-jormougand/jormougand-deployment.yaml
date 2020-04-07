@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jormougand
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: jormougand
-        image: dockerhub.deepglint.com/wolf/jormougand:5.0.11
+        image: dockerhub.deepglint.com/wolf/jormougand:{{.Values.jormougand.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -23,17 +23,17 @@ spec:
         volumeMounts:
         - name: jormougand-config
           mountPath: /etc/nginx/conf.d
-        - name: athena-tmp
-          mountPath: /platformData/athenadir/tmp
+        - name: platformdata-dir
+          mountPath: /platformData
         - name: localtime
           mountPath: /etc/localtime
       volumes:
         - name: jormougand-config
           configMap:
             name: jormougand-nginx-config
-        - name: athena-tmp
+        - name: platformdata-dir
           hostPath:
-            path: /platformData/athenadir/tmp
+            path: /platformData
         - name: localtime
           hostPath:
             path: /etc/localtime

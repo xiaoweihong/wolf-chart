@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: iris-service
+  namespace: {{.Values.namespace}}
+spec:
+  type: NodePort
+  selector:
+    name: iris
+  ports:
+  - name: http
+    port: 8083
+    targetPort: 8083
+    nodePort: 30083

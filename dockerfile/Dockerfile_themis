@@ -1,0 +1,4 @@
+FROM alpine
+WORKDIR /themis
+COPY . ./
+CMD ["./themis", "-stderrthreshold=0", "-logtostderr=true", "-v=4"]

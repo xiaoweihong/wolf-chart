@@ -12,6 +12,7 @@ data:
     tcp-keepalive 60
     loglevel notice
     databases 16
+    requirepass deepglint@2013
     slave-serve-stale-data yes
     #slave只读
     slave-read-only yes
@@ -81,6 +82,7 @@ data:
     tcp-keepalive 60
     loglevel notice
     databases 16
+    requirepass deepglint@2013
     slave-serve-stale-data yes
     #slave只读
     slave-read-only yes

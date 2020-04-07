@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: loki
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 1
   selector:
@@ -15,11 +15,14 @@ spec:
     spec:
       containers:
       - name: loki
-        image: dockerhub.deepglint.com/wolf/loki:1.9.12
+        image: dockerhub.deepglint.com/wolf/loki:2.0.39
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
           containerPort: 3000
+        env:
+        - name: ENVIRONMENT
+          value: production
         command: ["./loki"]
         args:
         - "-stderrthreshold=0"

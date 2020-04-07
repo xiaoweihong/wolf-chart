@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: bultgang
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: bultgang
-        image: dockerhub.deepglint.com/wolf/bultgang:0.6.5
+        image: dockerhub.deepglint.com/wolf/bultgang:{{.Values.bultgang.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http

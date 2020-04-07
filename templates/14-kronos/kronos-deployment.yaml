@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kronos
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: kronos
-        image: dockerhub.deepglint.com/wolf/kronos:0.10.1
+        image: dockerhub.deepglint.com/wolf/kronos:0.11.0
         imagePullPolicy: IfNotPresent
         #ports:
         #- name: http

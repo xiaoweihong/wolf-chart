@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: jormougand-nginx-config
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 data:
   jormougand.nginx.conf: |
     server {
@@ -10,8 +10,8 @@ data:
             listen [::]:80 default_server ipv6only=on;
     #        listen 443 ssl;
     #        listen [::]:443 ipv6only=on;
-    #        ssl_certificate     /home/dell/face/jormougand/latest/cert/cert.crt;
-    #        ssl_certificate_key /home/dell/face/jormougand/latest/cert/cert.key;
+    #        ssl_certificate     /home/ubuntu/platformTG/jormougand/latest/cert/cert.crt;
+    #        ssl_certificate_key /home/ubuntu/platformTG/jormougand/latest/cert/cert.key;
     
             root   /jormougand;
             index index.html index.htm;
@@ -39,11 +39,15 @@ data:
             }
     
             location /proxy/loki/  {
+              proxy_set_header X-Real-IP $remote_addr; # 存放用户的真实ip
+                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; # 每经过一个反向代理，就会把反向代理IP存放在X-Forwarded-
                     proxy_pass http://loki-service.wolf.svc.cluster.local:3000/;
             }
     
     
             location /proxy/croatia/  {
+              proxy_set_header X-Real-IP $remote_addr; # 存放用户的真实ip
+                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; # 每经过一个反向代理，就会把反向代理IP存放在X-Forwarded-F
                     proxy_pass http://croatia-service.wolf.svc.cluster.local:1314/;
             }
     
@@ -52,10 +56,6 @@ data:
                     sendfile   on;
             }
     
-            location /geojson/ {
-                    root /platformData/;
-                    sendfile   on;
-            }
     
             location /proxy/k2s/ {
                 proxy_http_version 1.1;
@@ -69,7 +69,21 @@ data:
                 proxy_pass http://k2s-service.wolf.svc.cluster.local:8082/;
             }
     
+            location /proxy/iris/ {
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "Upgrade";
+                proxy_set_header Proxy "";
+                proxy_set_header Host $http_host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_pass http://iris-service.wolf.svc.cluster.local:8083/;
+            }
+    
             location /proxy {
+                proxy_set_header X-Real-IP $remote_addr; # 存放用户的真实ip
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; # 每经过一个反向代理，就会把反向代理IP存放在X-Forwarded-F
                 proxy_intercept_errors on;
                 if ($request_uri ~* "url=(.*)") {
                     proxy_pass $1;
@@ -78,6 +92,8 @@ data:
             }
     
             location @handle_redirects {
+                proxy_set_header X-Real-IP $remote_addr; # 存放用户的真实ip
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; # 每经过一个反向代理，就会把反向代理IP存放在X-Forwarded-F
                 set $saved_redirect_location '$upstream_http_location';
                 proxy_pass $saved_redirect_location;
             }

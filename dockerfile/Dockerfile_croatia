@@ -1,0 +1,4 @@
+FROM alpine
+WORKDIR /croatia
+COPY . ./
+CMD ["./croatia", "-stderrthreshold=0", "-logtostderr=true", "-v=4"]

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: seaweedfs-capture-master
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: capture-seaweedfs-master
-        image: dockerhub.deepglint.com/wolf/seaweedfs:1.48
+        image: dockerhub.deepglint.com/wolf/seaweedfs:{{.Values.seaweedfs.imageTag}}
         ports:
         - name: http
           containerPort: 9333
@@ -46,7 +46,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: seaweedfs-capture-volume00
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 1
   selector:
@@ -59,7 +59,7 @@ spec:
     spec:
       containers:
       - name: capture-seaweedfs-volume00
-        image: dockerhub.deepglint.com/wolf/seaweedfs:1.48
+        image: dockerhub.deepglint.com/wolf/seaweedfs:{{.Values.seaweedfs.imageTag}}
         ports:
         - name: http
           containerPort: 9300
@@ -70,10 +70,10 @@ spec:
         - "volume"
         - "-mserver=capture-seaweedfs-service-master.wolf.svc.cluster.local:9333"
         - "-ip=capture-seaweedfs-service-volume00.wolf.svc.cluster.local"
-        - "-publicUrl=192.168.100.118:30300"
+        - "-publicUrl={{.Values.HOSTIP}}:30300"
         - "-dir=/data"
         - "-port=9300"
-        - "-max=55"
+        - "-max=0"
         volumeMounts:
         - name: capture-data-volume00
           mountPath: /data
@@ -88,58 +88,11 @@ spec:
           path: /etc/localtime
 
 ---
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: seaweedfs-capture-volume01
-  namespace: wolf
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      name: capture-seaweedfs-volume01
-  template:
-    metadata:
-      labels:
-        name: capture-seaweedfs-volume01
-    spec:
-      containers:
-      - name: capture-seaweedfs-master
-        image: dockerhub.deepglint.com/wolf/seaweedfs:1.48
-        ports:
-        - name: http
-          containerPort: 9301
-        - name: grpc
-          containerPort: 19301
-        args:
-        - "-alsologtostderr"
-        - "volume"
-        - "-mserver=capture-seaweedfs-service-master.wolf.svc.cluster.local:9333"
-        - "-ip=capture-seaweedfs-service-volume01.wolf.svc.cluster.local"
-        - "-publicUrl=192.168.100.118:30301"
-        - "-dir=/data"
-        - "-port=9301"
-        - "-max=55"
-        volumeMounts:
-        - name: capture-data-volume01
-          mountPath: /data
-        - name: localtime
-          mountPath: /etc/localtime
-      volumes:
-      - name: capture-data-volume01
-        hostPath:
-          path: /platformData/weedfs/capture/volume01
-      - name: localtime
-        hostPath:
-          path: /etc/localtime
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: seaweedfs-register-master
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 1
   selector:
@@ -152,7 +105,7 @@ spec:
     spec:
       containers:
       - name: register-seaweedfs-master
-        image: dockerhub.deepglint.com/wolf/seaweedfs:1.48
+        image: dockerhub.deepglint.com/wolf/seaweedfs:{{.Values.seaweedfs.imageTag}}
         ports:
         - name: http
           containerPort: 5333
@@ -183,7 +136,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: seaweedfs-register-volume00
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 1
   selector:
@@ -196,7 +149,7 @@ spec:
     spec:
       containers:
       - name: register-seaweedfs-volume00
-        image: dockerhub.deepglint.com/wolf/seaweedfs:1.48
+        image: dockerhub.deepglint.com/wolf/seaweedfs:{{.Values.seaweedfs.imageTag}}
         ports:
         - name: http
           containerPort: 5300
@@ -207,10 +160,10 @@ spec:
         - "volume"
         - "-mserver=register-seaweedfs-service-master.wolf.svc.cluster.local:5333"
         - "-ip=register-seaweedfs-service-volume00.wolf.svc.cluster.local"
-        - "-publicUrl=192.168.100.118:30500"
+        - "-publicUrl={{.Values.HOSTIP}}:30500"
         - "-dir=/data"
         - "-port=5300"
-        - "-max=55"
+        - "-max=0"
         volumeMounts:
         - name: register-data-volume00
           mountPath: /data
@@ -220,53 +173,6 @@ spec:
       - name: register-data-volume00
         hostPath:
           path: /platformData/weedfs/register/volume00
-      - name: localtime
-        hostPath:
-          path: /etc/localtime
-
----
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: seaweedfs-register-volume01
-  namespace: wolf
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      name: register-seaweedfs-volume01
-  template:
-    metadata:
-      labels:
-        name: register-seaweedfs-volume01
-    spec:
-      containers:
-      - name: register-seaweedfs-volume01
-        image: dockerhub.deepglint.com/wolf/seaweedfs:1.48
-        ports:
-        - name: http
-          containerPort: 5301
-        - name: grpc
-          containerPort: 15301
-        args:
-        - "-alsologtostderr"
-        - "volume"
-        - "-mserver=register-seaweedfs-service-master.wolf.svc.cluster.local:5333"
-        - "-ip=register-seaweedfs-service-volume01.wolf.svc.cluster.local"
-        - "-publicUrl=192.168.100.118:31501"
-        - "-dir=/data"
-        - "-port=5301"
-        - "-max=55"
-        volumeMounts:
-        - name: register-data-volume01
-          mountPath: /data
-        - name: localtime
-          mountPath: /etc/localtime
-      volumes:
-      - name: register-data-volume01
-        hostPath:
-          path: /platformData/weedfs/register/volume01
       - name: localtime
         hostPath:
           path: /etc/localtime

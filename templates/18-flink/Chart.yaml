@@ -1,5 +1,0 @@
-apiVersion: v1
-appVersion: "1.0"
-description: A Flink chart for Kubernetes using Helm
-name: flink
-version: latest

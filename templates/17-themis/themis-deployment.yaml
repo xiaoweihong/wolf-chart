@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: themis
-        image: dockerhub.deepglint.com/wolf/themis:0.8.2.1
+        image: dockerhub.deepglint.com/wolf/themis:0.8.5
         imagePullPolicy: IfNotPresent
         ports:
         - name: http

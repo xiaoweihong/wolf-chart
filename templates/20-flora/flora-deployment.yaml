@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flora
+  namespace: {{.Values.namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: flora
+  template:
+    metadata:
+      labels:
+        name: flora
+    spec:
+      containers:
+      - name: flora
+        image: dockerhub.deepglint.com/wolf/flora:{{.Values.flora.imageTag}}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 4000
+        command: ["./flora"]
+        args:
+        - "-level=0"
+        volumeMounts:
+        - name: flora-config
+          mountPath: /flora/config
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+        - name: flora-config
+          configMap:
+            name: flora-config
+        - name: localtime
+          hostPath:
+            path: /etc/localtime

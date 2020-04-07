@@ -2,434 +2,463 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: loki-config 
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 data:
   default.json: | 
     {
-      "auth": {
-        "key": "4rd5rAPPz52dhvjlSK1lTT08dOVNxFKN0GeosDeps3cAUwlL5YzkGBDbD3sGvogd",
-        "timeout": "168h",
-        "maxRefresh": "168h",
-        "impersonateAllowList": [
-          ".*"
-        ]
-      },
-      "log": {
-        "http": false
-      },
-      "api": {
-        "logout": {
-          "updateSecurityToken": false
+        "auth":{
+            "key":"4rd5rAPPz52dhvjlSK1lTT08dOVNxFKN0GeosDeps3cAUwlL5YzkGBDbD3sGvogd",
+            "timeout":"168h",
+            "maxRefresh":"168h",
+            "impersonateAllowList":[
+                ".*"
+            ]
         },
-        "updatePassword": {
-          "updateSecurityToken": true
+        "log":{
+            "http":false,
+            "skip_path":[
+    
+            ]
         },
-        "updateDeviceRole": {
-          "updateSecurityToken": true
-        },
-        "updateFuncRole": {
-          "updateSecurityToken": true
-        },
-        "updateUser": {
-          "updateSecurityToken": true
-        },
-        "_requestLogger": {
-          "logUrl": true,
-          "printBody": true,
-          "logBody": [
-            "application/json"
-          ]
-        },
-        "capturedFace": {
-          "rankFeatureCandidatesFactor": 5,
-          "repositoryName": "ReverseSort+SkipCount",
-          "tableName": "faces"
-        },
-        "faceEvent": {
-          "repositoryName": "ReverseSort+SkipCount"
-        },
-        "faceWhiteEvent": {
-          "rankFeatureCandidatesFactor": 5,
-          "repositoryName": "ReverseSort+SkipCount",
-          "tableName": "white_warn"
-        },
-        "civil": {
-          "rankFeatureCandidatesFactor": 15,
-          "repositoryName": "ReverseSort+SkipCount"
-        },
-        "export": {
-          "civilImageCount": 3,
-          "downloadAssetConcurrency": 100,
-          "failedCivilImageCount": 3,
-          "faceEventColumns": [
-            "序号",
-            "抓拍人脸图片",
-            "比中人脸图片",
-            "比对分数",
-            "抓拍时间",
-            "监控点名称",
-            "比对库名称",
-            "姓名",
-            "证件号",
-            "备注",
-            "审核状态",
-            "审核人",
-            "全景图"
-          ],
-          "personFileColumns": [
-            "序号",
-            "姓名",
-            "身份证号",
-            "档案标志照片",
-            "档案建立时间",
-            "实名状态",
-            "关注状态",
-            "分值"
-          ]
-        },
-        "frequencyAnalyze": {
-          "common": {
-            "maxTaskNumInAthena": 10,
-            "maxTaskNumOfOneUser": 10,
-            "createTaskMaxSensorCount": 500,
-            "createTaskMaxTsDurationDays": 31
-          }
-        },
-        "firstAppearance": {
-          "userTaskLimit": 10,
-          "sensorCountLimit": 500,
-          "selectedDaysLimit": 90,
-          "backtrackingDaysLimit": 90
-        },
-        "areacollision": {
-          "userTaskLimit": 10,
-          "sensorCountLimit": 500,
-          "selectedDaysLimit": 31
-        },
-          "dayinnightout": {
-            "userTaskLimit": 10,
-            "sensorCountLimit": 500,
-            "selectedDaysLimit": 31
-          },
-        "fakePlate": {
-          "userTaskLimit": 10,
-          "sensorCountLimit": 500,
-          "selectedDaysLimit": 90
-        },
-        "hidden": {
-          "userTaskLimit": 10,
-          "sensorCountLimit": 500,
-          "selectedDaysLimit": 31
-        },
-        "pathanalyze": {
-          "userTaskLimit": 10,
-          "sensorCountLimit": 500,
-          "selectedDaysLimit": 31
-        },
-        "personFile": {
-          "repositoryName": "ReverseSort+SkipCount"
-        },
-        "vehicleFile": {
-          "repositoryName": "ReverseSort+SkipCount"
-        },
-        "repoStatistics": {
-          "repoIDCount": 3,
-          "repoIDs": [
-            "0002",
-            "adf92850-87fc-4226-be36-0aa2ee44c82d",
-            "4b273149-a4b6-4a51-b79c-f5b8f0707d89"
-          ]
-        },
-        "preview": {
-          "schedulerTime": "5s",
-          "cacheExpireTimeOfLatestTs": 70,
-          "maxKeepAliveTime": "60s"
-        },
-        "templatesBasePath": "/loki/config/templates",
-        "captureQuery": {
-          "single_goroutine_query": 50,
-          "index_query":100,
-          "sensor_query": 60,
-          "cpu_num": 1
-        }
-      },
-      "database": {
-        "connectionString": "postgres://postgres:Zstvgcs@9102@192.168.2.222/deepface_v5",
-        "maxOpenConns": 100,
-        "maxIdleConns": 100,
-        "connMaxLifetime": "1m",
-        "logLevel": "info",
-        "showSql": true
-      },
-      "services": {
-        "fse_runtime": {
-          "addr": "http://192.168.2.222:3154/x-api/v1",
-          "face": {
-            "repo_id": "capture-face-repo",
-            "index_type": "int8",
-            "level":"ram",
-            "replications":2,
-            "capacity":1000000000,
-            "options": {
-              "UseFeatureIDMap": "true",
-              "Rotate": "true",
-              "hashingNum":"2"
-            }
-          },
-          "vehicle": {
-            "repo_id": "capture-vehicle-repo",
-            "index_type": "int8",
-            "level":"ram",
-            "replications":2,
-            "capacity":1000000000,
-            "options": {
-              "UseFeatureIDMap": "true",
-              "Rotate": "true",
-              "hashingNum":"2"
-            }
-          },
-          "nonmotor": {
-            "repo_id": "capture-nonmotor-repo",
-            "index_type": "int8",
-            "level":"ram",
-            "replications":2,
-            "capacity":1000000000,
-            "options": {
-              "UseFeatureIDMap": "true",
-              "Rotate": "true",
-              "hashingNum":"2"
-            }
-          },
-          "pedestrian": {
-            "repo_id": "capture-pedestrian-repo",
-            "index_type": "int8",
-            "level":"ram",
-            "replications":2,
-            "capacity":1000000000,
-            "options": {
-              "UseFeatureIDMap": "true",
-              "Rotate": "true",
-              "hashingNum":"2"
-            }
-          }
-        },
-        "fse_black":{
-          "addr": "http://192.168.2.222:3154/x-api/v1",
-          "default_repo": [
-            "0001",
-            "0002",
-            "0003",
-            "0004",
-            "0005",
-            "0006"
-          ],
-          "face": {
-            "index_type": "int8",
-            "level":"ram",
-            "replications":2,
-            "capacity":1000000000,
-            "options": {
-              "UseFeatureIDMap": "true",
-              "Rotate": "true",
-              "hashingNum":"2"
-            }
-          }
-        },
-        "sax": {
-          "addr": "http://192.168.2.222:50051"
-        },
-        "arcee": {
-          "addr": "192.168.2.222:7502",
-          "connect_number": 10,
-          "try_times": 3
-        },
-        "hercules": {
-          "addr": "http://192.168.2.222:1315"
-        },
-        "megvii": {
-          "addr": "http://104.35.96.231:81",
-          "needTestData": true
-        },
-        "mserver": {
-          "run_addr": "http://192.168.2.222:9009",
-          "out_addr": "192.168.2.222:8905"
-        },
-        "link": {
-          "addr": "http://192.168.2.222:30233"
-        },
-        "deepcloud": {
-          "addr": "http://192.168.2.222:39876/api",
-          "access_key": "7966023d-0eee-4104-9c2f-8efa4279442a",
-          "secret_key": "9e7b1900-302b-4059-bcaa-047262f3ca3b",
-          "authkey": "dp-auth-v0",
-          "timeout_second": 60,
-          "switch": true
-        },
-        "archimedes": {
-          "addr": "http://192.168.2.222:6666/archimedes/v1",
-          "timeout_second": 60,
-          "VehicleTypeValue":      34,
-          "VehicleColorValue":     39,
-          "VehiclePlateTypeValue": 20,
-          "FaceAgeValue":          1,
-          "FaceGenderValue":       16,
-          "Rate":                  10000
-        },
-        "themis": {
-          "addr": "http://192.168.2.222:7777/themis/v1",
-          "timeout_second": 60
-        },
-        "vse_face": {
-          "addr": "http://192.168.2.222:38080"
-        },
-        "vse_vehicle": {
-          "addr": "http://192.168.2.222:38080"
-        },
-        "elasticsearch": {
-          "url": "http://192.168.2.222:9209",
-          "inuse": false
-        },
-        "athena": {
-          "addr": "http://192.168.2.222:2013",
-          "platform_sync": {
-            "gb": {
-              "url": "http://%s:%d/dgsip/catalog"
+        "api":{
+            "logout":{
+                "updateSecurityToken":false
             },
-            "pvg": {
-              "url": "netposa://%s:%s@%s:%d"
+            "updatePassword":{
+                "updateSecurityToken":true
+            },
+            "updateDeviceRole":{
+                "updateSecurityToken":true
+            },
+            "updateFuncRole":{
+                "updateSecurityToken":true
+            },
+            "updateUser":{
+                "updateSecurityToken":true
+            },
+            "_requestLogger":{
+                "logUrl":true,
+                "printBody":true,
+                "logBody":[
+                    "application/json"
+                ]
+            },
+            "_responseLogger":{
+                "logUrl":false,
+                "printBody":false,
+                "logBody":[
+                    "application/json"
+                ]
+            },
+            "capturedFace":{
+                "rankFeatureCandidatesFactor":5,
+                "repositoryName":"ReverseSort+SkipCount",
+                "tableName":"faces"
+            },
+            "faceEvent":{
+                "repositoryName":"ReverseSort+SkipCount"
+            },
+            "faceWhiteEvent":{
+                "rankFeatureCandidatesFactor":5,
+                "repositoryName":"ReverseSort+SkipCount",
+                "tableName":"white_warn"
+            },
+            "civil":{
+                "rankFeatureCandidatesFactor":15,
+                "repositoryName":"ReverseSort+SkipCount"
+            },
+            "export":{
+                "civilImageCount":3,
+                "downloadAssetConcurrency":100,
+                "failedCivilImageCount":3,
+                "faceEventColumns":[
+                    "序号",
+                    "抓拍人脸图片",
+                    "比中人脸图片",
+                    "比对分数",
+                    "抓拍时间",
+                    "监控点名称",
+                    "比对库名称",
+                    "姓名",
+                    "证件号",
+                    "备注",
+                    "审核状态",
+                    "审核人",
+                    "全景图"
+                ],
+                "personFileColumns":[
+                    "序号",
+                    "姓名",
+                    "身份证号",
+                    "档案标志照片",
+                    "档案建立时间",
+                    "实名状态",
+                    "关注状态",
+                    "分值"
+                ]
+            },
+            "frequencyAnalyze":{
+                "common":{
+                    "maxTaskNumInAthena":10,
+                    "maxTaskNumOfOneUser":10,
+                    "createTaskMaxSensorCount":500,
+                    "createTaskMaxTsDurationDays":31
+                }
+            },
+            "firstAppearance":{
+                "userTaskLimit":10,
+                "sensorCountLimit":500,
+                "selectedDaysLimit":90,
+                "backtrackingDaysLimit":90
+            },
+            "areacollision":{
+                "userTaskLimit":10,
+                "sensorCountLimit":500,
+                "selectedDaysLimit":31
+            },
+            "dayinnightout":{
+                "userTaskLimit":10,
+                "sensorCountLimit":500,
+                "selectedDaysLimit":31
+            },
+            "fakePlate":{
+                "userTaskLimit":10,
+                "sensorCountLimit":500,
+                "selectedDaysLimit":90
+            },
+            "hidden":{
+                "userTaskLimit":10,
+                "sensorCountLimit":500,
+                "selectedDaysLimit":31
+            },
+            "pathanalyze":{
+                "userTaskLimit":10,
+                "sensorCountLimit":500,
+                "selectedDaysLimit":31
+            },
+            "repocollision":{
+                "userTaskLimit":10,
+                "maxRepoCount":5,
+                "minRepoCount":2,
+                "maxConfidence":1,
+                "minConfidence":0.8
+            },
+            "personFile":{
+                "repositoryName":"ReverseSort+SkipCount",
+                "searchFeature":0.88
+            },
+            "vehicleFile":{
+                "repositoryName":"ReverseSort+SkipCount"
+            },
+            "repoStatistics":{
+                "repoIDCount":3,
+                "repoIDs":[
+                    "0002",
+                    "adf92850-87fc-4226-be36-0aa2ee44c82d",
+                    "4b273149-a4b6-4a51-b79c-f5b8f0707d89"
+                ]
+            },
+            "preview":{
+                "schedulerTime":"5s",
+                "cacheExpireTimeOfLatestTs":70,
+                "maxKeepAliveTime":"60s"
+            },
+            "templatesBasePath":"/loki/config/templates",
+            "captureQuery":{
+                "single_goroutine_query":50,
+                "index_query":100,
+                "sensor_query":60,
+                "sensor_resource":60,
+                "cpu_num":1
+            },
+            "record":{
+                "cacheThreshold":1,
+                "nginxPort":"80"
+            },
+            "org":{
+                "max_org_num_per_level":500,
+                "max_org_level":6
             }
-          }
         },
-        "redis": {
-          "cache": {
-            "addr": "192.168.2.222:6379",
-            "password": ""
-          },
-          "store": {
-            "addr": "192.168.2.222:6379",
-            "password": ""
-          }
+        "database":{
+            "connectionString":"postgres://postgres:Zstvgcs@9102@127.0.0.1/deepface_v5?sslmode=disable",
+            "maxOpenConns":100,
+            "maxIdleConns":100,
+            "connMaxLifetime":"1m",
+            "logLevel":"info",
+            "showSql":false
         },
-        "sentry": {
-          "switcher": false,
-          "dsn": "http://c36d8009c6c14f9083bb2844f4cf4890@192.168.2.222:9999/2",
-          "environment": "2.222"
+        "services":{
+            "fse_runtime":{
+                "addr":"http://127.0.0.1:8000/x-api/v1",
+                "face":{
+                    "repo_id":"capture-face-repo",
+                    "index_type":"int8",
+                    "level":"ram",
+                    "replications":3,
+                    "capacity":1000000000,
+                    "options":{
+                        "UseFeatureIDMap":"true",
+                        "Rotate":"true",
+                        "hashingNum":"2"
+                    }
+                },
+                "vehicle":{
+                    "repo_id":"capture-vehicle-repo",
+                    "index_type":"int8",
+                    "level":"ram",
+                    "replications":3,
+                    "capacity":1000000000,
+                    "options":{
+                        "UseFeatureIDMap":"true",
+                        "Rotate":"true",
+                        "hashingNum":"2"
+                    }
+                },
+                "nonmotor":{
+                    "repo_id":"capture-nonmotor-repo",
+                    "index_type":"int8",
+                    "level":"ram",
+                    "replications":3,
+                    "capacity":1000000000,
+                    "options":{
+                        "UseFeatureIDMap":"true",
+                        "Rotate":"true",
+                        "hashingNum":"2"
+                    }
+                },
+                "pedestrian":{
+                    "repo_id":"capture-pedestrian-repo",
+                    "index_type":"int8",
+                    "level":"ram",
+                    "replications":3,
+                    "capacity":1000000000,
+                    "options":{
+                        "UseFeatureIDMap":"true",
+                        "Rotate":"true",
+                        "hashingNum":"2"
+                    }
+                }
+            },
+            "fse_black":{
+                "addr":"http://127.0.0.1:8000/x-api/v1",
+                "default_repo":[
+                    "0001",
+                    "0002",
+                    "0003",
+                    "0004",
+                    "0005",
+                    "0006"
+                ],
+                "face":{
+                    "index_type":"int8",
+                    "level":"ram",
+                    "replications":3,
+                    "capacity":1000000000,
+                    "options":{
+                        "UseFeatureIDMap":"true",
+                        "Rotate":"true",
+                        "hashingNum":"2"
+                    }
+                }
+            },
+            "sax":{
+                "addr":"http://192.168.100.156:50051"
+            },
+            "arcee":{
+                "addr":"192.168.100.156:7502",
+                "connect_number":10,
+                "try_times":3
+            },
+            "hercules":{
+                "addr":"http://192.168.100.118:1315"
+            },
+            "megvii":{
+                "addr":"http://104.35.96.231:81",
+                "needTestData":true
+            },
+            "mserver":{
+                "run_addr":"http://192.168.100.156:9009",
+                "out_addr":"192.168.100.156:8905"
+            },
+            "link":{
+                "addr":"http://192.168.100.156:30233"
+            },
+            "deepcloud":{
+                "addr":"http://192.168.100.156:39876/api",
+                "access_key":"7966023d-0eee-4104-9c2f-8efa4279442a",
+                "secret_key":"9e7b1900-302b-4059-bcaa-047262f3ca3b",
+                "authkey":"dp-auth-v0",
+                "timeout_second":60,
+                "switch":true
+            },
+            "archimedes":{
+                "addr":"http://192.168.100.156:6666/archimedes/v1",
+                "timeout_second":60,
+                "VehicleTypeValue":34,
+                "VehicleColorValue":39,
+                "VehiclePlateTypeValue":20,
+                "FaceAgeValue":1,
+                "FaceGenderValue":16,
+                "Rate":10000
+            },
+            "themis":{
+                "addr":"http://192.168.100.156:7777/themis/v1",
+                "timeout_second":60
+            },
+            "vse_face":{
+                "addr":"http://192.168.100.156:38080"
+            },
+            "vse_vehicle":{
+                "addr":"http://192.168.100.156:38080"
+            },
+            "elasticsearch":{
+                "url":"http://192.168.2.147:9200",
+                "inuse":false
+            },
+            "athena":{
+                "addr":"http://127.0.0.1:2013",
+                "platform_sync":{
+                    "gb":{
+                        "url":"http://%s:%d/dgsip/catalog"
+                    },
+                    "pvg":{
+                        "url":"netposa://%s:%s@%s:%d"
+                    }
+                }
+            },
+            "redis":{
+                "cache":{
+                    "addr":"127.0.0.1:6378",
+                    "password":"deepglint@2013"
+                },
+                "store":{
+                    "addr":"127.0.0.1:6378",
+                    "password":"deepglint@2013"
+                }
+            },
+            "sentry":{
+                "switcher":false,
+                "dsn":"http://c36d8009c6c14f9083bb2844f4cf4890@192.168.100.118:9999/2",
+                "environment":"2.142"
+            },
+            "pse":{
+                "addr":"http://127.0.0.1:1989"
+            }
         },
-        "pse":{
-          "addr": "http://192.168.2.222:1989"
+        "cronjob":{
+            "vid":{
+                "updatecron":"0 * * * * ?",
+                "updateseconds":100
+            },
+            "impact":{
+                "confidence":0.88,
+                "standerRepoID":"0001",
+                "cronscript":"0 41 17 * * *",
+                "timeoutDuration":18000,
+                "days":20
+            },
+            "repo":{
+                "cronscriptPicCount":"0 45 23 * * *",
+                "cronscriptclear":"0 30 23 * * *"
+            },
+            "partition":{
+                "face_cronscript":"@weekly",
+                "sax_switcher":false,
+                "sax_cronscript":"0 0 23 1 * *"
+            },
+            "delete_task":{
+                "cronscript":"0 45 22 * * *"
+            },
+            "civil_count":{
+                "cronscript":"@hourly"
+            },
+            "capture_count":{
+                "cronscript":"0 25 0 * * *",
+                "forward_days":0
+            },
+            "file_count":{
+                "cronscript":"0 30 0 * * *",
+                "forward_days":0
+            }
+        },
+        "tags":{
+            "person":{
+                "one":1,
+                "two":2,
+                "three":4,
+                "four":8,
+                "five":16,
+                "six":32,
+                "seven":64,
+                "eight":128
+            },
+            "vehicle":[
+                "one",
+                "two",
+                "three",
+                "four",
+                "five",
+                "six",
+                "seven",
+                "eight"
+            ]
+        },
+        "pool":{
+            "capacity":100
+        },
+        "platform":{
+            "kafkaAddress":[
+                "192.168.100.156:32400",
+                "192.168.100.156:32400",
+                "192.168.100.156:32400"
+            ],
+            "defaultGroup":"123",
+            "needSync":false,
+            "kafkaSyncTopic":"ferry_topic",
+            "kafkaLogTopic":"user_operation_log",
+            "consumer":false,
+            "producer":false,
+            "lokiTopic":"loki_sync_topic"
+        },
+        "switcher":{
+            "person_file_compare":false,
+            "repo_collision":false,
+            "repo_statistics":false,
+            "vid_combine":false
+        },
+        "similarity":{
+            "IsOpen":true,
+            "ConfigType":1,
+            "SlidingWindowMillsecond":5000,
+            "TopNum":5,
+            "CosThreashold":0.85,
+            "CosAParams":[
+                1.58730175,
+                2.30769028,
+                1.08108107,
+                0.85106399
+            ],
+            "CosBParams":[
+                -0.26428582,
+                -0.74730632,
+                0.09108108,
+                0.25255307
+            ],
+            "ThresParams":[
+                0.6705,
+                0.6835,
+                0.702
+            ],
+            "LinearAlpha":1,
+            "LinearBeta":0
+        },
+        "limit":{
+            "sensor":10000,
+            "user_capture_favorite":10000
         }
-      },
-      "cronjob": {
-        "vid": {
-          "updatecron": "0 * * * * ?",
-          "updateseconds": 100
-        },
-        "impact": {
-          "confidence": 0.88,
-          "standerRepoID": "0001",
-          "cronscript": "0 41 17 * * *",
-          "timeoutDuration": 18000,
-          "days": 20
-        },
-        "repo": {
-          "cronscriptPicCount": "0 45 23 * * *",
-          "cronscriptclear": "0 30 23 * * *"
-        },
-        "partition": {
-          "face_cronscript": "@weekly",
-          "sax_switcher": false,
-          "sax_cronscript": "0 0 23 1 * *"
-        },
-        "delete_task": {
-          "cronscript": "0 45 22 * * *"
-        },
-        "civil_count": {
-          "cronscript": "@hourly"
-        },
-        "capture_count": {
-          "cronscript": "0 25 0 * * *",
-          "forward_days": 0
-        },
-        "file_count": {
-          "cronscript": "0 30 0 * * *",
-          "forward_days": 0
-        }
-      },
-      "tags": {
-        "person": {
-          "one": 1,
-          "two": 2,
-          "three": 4,
-          "four": 8,
-          "five": 16,
-          "six": 32,
-          "seven": 64,
-          "eight": 128
-        },
-        "vehicle": [
-          "one",
-          "two",
-          "three",
-          "four",
-          "five",
-          "six",
-          "seven",
-          "eight"
-        ]
-      },
-      "pool": {
-        "capacity": 100
-      },
-      "platform": {
-        "kafkaAddress": [
-          "192.168.2.222:32400",
-          "192.168.2.222:32401",
-          "192.168.2.222:32402"
-        ],
-        "defaultGroup": "123",
-        "needSync": false,
-        "kafkaSyncTopic": "ferry_topic",
-        "consumer": false,
-        "producer": false,
-        "lokiTopic": "loki_sync_topic"
-      },
-      "switcher": {
-        "person_file_compare": false,
-        "repo_collision": false,
-        "repo_statistics": false,
-        "vid_combine": false
-      },
-      "similarity": {
-        "IsOpen": true,
-        "ConfigType": 1,
-        "SlidingWindowMillsecond": 5000,
-        "TopNum": 5,
-        "CosThreashold": 0.85,
-        "CosAParams": [
-          1.58730175,
-          2.30769028,
-          1.08108107,
-          0.85106399
-        ],
-        "CosBParams": [
-          -0.26428582,
-          -0.74730632,
-          0.09108108,
-          0.25255307
-        ],
-        "ThresParams": [
-          0.6705,
-          0.6835,
-          0.702
-        ],
-        "LinearAlpha": 1,
-        "LinearBeta": 0
-      },
-      "limit": {
-        "sensor": 1000,
-        "user_capture_favorite": 1000
-      }
     }
+    
   production.json: | 
     {
         "api":{
@@ -459,14 +488,14 @@ data:
                 "addr":"arcee-register-service.wolf.svc.cluster.local:7502"
             },
             "hercules":{
-                "addr":"http://192.168.2.222:1315"
+                "addr":"http://192.168.100.118:1315"
             },
             "megvii":{
                 "addr":"http://104.35.96.231:81",
                 "needTestData":false
             },
             "mserver":{
-                "run_addr":"http://192.168.100.118:9009",
+                "run_addr":"http://127.0.0.1:9009",
                 "out_addr":"127.0.0.1:8905"
             },
             "link":{
@@ -479,7 +508,7 @@ data:
                 "addr":"http://ingress-nginx.ingress-nginx.svc.cluster.local"
             },
             "elasticsearch":{
-                "url":"http://192.168.2.174:9209",
+                "url":"http://elk-service.wolf.svc.cluster.local:9200",
                 "inuse":false
             },
             "athena":{
@@ -488,11 +517,11 @@ data:
             "redis":{
                 "cache":{
                     "addr":"redis-service.wolf.svc.cluster.local:6378",
-                    "password":""
+                    "password":"deepglint@2013"
                 },
                 "store":{
                     "addr":"redis-service.wolf.svc.cluster.local:6378",
-                    "password":""
+                    "password":"deepglint@2013"
                 }
             },
             "pse":{

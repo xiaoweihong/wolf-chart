@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+  namespace: {{.Values.namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: elk
+  template:
+    metadata:
+      labels:
+        name: elk
+    spec:
+      containers:
+      - name: elk
+        image: elasticsearch:7.5.2
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: discovery.type
+          value: single-node
+        ports:
+        - name: http
+          containerPort: 9200
+        volumeMounts:
+        - name: localtime
+          mountPath: /etc/localtime
+        - name: elk-data
+          mountPath: /usr/share/elasticsearch/data
+      volumes:
+        - name: elk-data
+          hostPath:
+            path: /platformData/elk/elasticsearch/data2
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+      
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logstash
+  namespace: {{.Values.namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: logstash
+  template:
+    metadata:
+      labels:
+        name: logstash
+    spec:
+      containers:
+      - name: logstash
+        image: logstash:7.5.2
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: localtime
+          mountPath: /etc/localtime
+        - name: logstash-config
+          mountPath: /usr/share/logstash/pipeline
+      volumes:
+        - name: logstash-config
+          configMap:
+            name: logstash-config
+        - name: localtime
+          hostPath:
+            path: /etc/localtime

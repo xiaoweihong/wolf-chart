@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: saxvehicle-config
-  namespace: wolf
+  namespace: {{.Values.namespace}}
 data:
   application.yml: |
     server:

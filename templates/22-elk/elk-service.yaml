@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: elk-service
+  namespace: wolf
+spec:
+  type: NodePort
+  selector:
+    name: elk
+  ports:
+  - name: http
+    port: 9200
+    targetPort: 9200
+    nodePort: 30200
