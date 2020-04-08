@@ -11,7 +11,7 @@ data:
       }
       kafka {
         id => "logstash_id"
-        bootstrap_servers => ["bootstrap.kafka.svc.cluster.local:9092"]
+        bootstrap_servers => ["{{.Values.KAFKA_ADDRESS}}"]
         topics => ["user_operation_log"]     # kafka.topic
         # group_id => "logstash"             # default logstash
         # client_id => "logstash"            # default logstash

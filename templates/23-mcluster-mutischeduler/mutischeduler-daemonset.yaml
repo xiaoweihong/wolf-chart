@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: mutischeduler
+  namespace: wolf
+spec:
+  selector:
+    matchLabels:
+      app: mutischeduler
+  template:
+    metadata:
+      labels:
+        app: mutischeduler
+    spec:
+      hostNetwork: true
+      containers:
+      - name: mutischeduler
+        image: dockerhub.deepglint.com/arch/mutischeduler:1.0.0
+        imagePullPolicy: IfNotPresent
+        command: 
+        - "./mutischeduler"
+        args: 
+        - "-log_dir=logs"
+        - "-v=2"
+        volumeMounts:
+        - name: mutischeduler-config
+          mountPath: /dori/config.json
+          subPath: config.json
+        - name: localtime
+          mountPath: /etc/localtime
+        ports:
+        - name: mu-http
+          containerPort: 9009 
+          protocol: TCP
+          hostPort: 9009
+      volumes:
+      - name: mutischeduler-config
+        configMap:
+          name: mutischeduler-config
+      - name: localtime
+        hostPath:
+          path: /etc/localtime

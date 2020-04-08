@@ -54,7 +54,7 @@ data:
         },
         "KafkaInputNodeConfig":{
             "Brokers":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "Topics":[
                 "face-importer"
@@ -65,7 +65,7 @@ data:
         },
         "KafkaOutputNodeConfig":{
             "KafkaAddress":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "KafkaTopic":"index-vehicle2",
             "MaxMessageBytes":"104857600",

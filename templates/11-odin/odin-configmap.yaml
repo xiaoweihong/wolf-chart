@@ -228,7 +228,7 @@ data:
         },
         "KafkaAllObjInputNodeConfig":{
             "Brokers":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "Topics":[
                 "index-vehicle2"
@@ -239,7 +239,7 @@ data:
         },
         "KafkaAllObjectFerryOutputNodeConfig":{
             "KafkaAddress":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "KafkaTopic":"ferry_topic",
             "MaxMessageBytes":"104857600",
@@ -250,7 +250,7 @@ data:
         },
         "KafkaAllObjectFerryInputNodeConfig":{
             "Brokers":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "Topics":[
                 "all_object_ferry_topic"
@@ -290,7 +290,7 @@ data:
         },
         "KafkaFaceCaptureIndexOutputNodeConfig":{
             "KafkaAddress":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "KafkaTopic":"devo-face-capture-index-topic",
             "MaxMessageBytes":"104857600",
@@ -353,7 +353,7 @@ data:
         },
         "KafkaFaceCaptureOutputNodeConfig":{
             "KafkaAddress":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "KafkaTopic":"devo-face-capture-topic",
             "MaxMessageBytes":"104857600",
@@ -362,7 +362,7 @@ data:
         },
         "KafkaFaceVidCaptureOutputNodeConfig":{
             "KafkaAddress":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "KafkaTopic":"devo-face-vid-capture-topic",
             "MaxMessageBytes":"104857600",
@@ -371,7 +371,7 @@ data:
         },
         "KafkaFaceWarnOutputNodeConfig":{
             "KafkaAddress":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "KafkaTopic":"devo-face-warn-topic",
             "MaxMessageBytes":"104857600",
@@ -394,7 +394,7 @@ data:
         },
         "KafkaFaceWhiteWarnOutputNodeConfig":{
             "KafkaAddress":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "KafkaTopic":"devo-face-white-warn-topic",
             "MaxMessageBytes":"104857600",
@@ -418,7 +418,7 @@ data:
         },
         "KafkaVehicleCaptureIndexOutputNodeConfig":{
             "KafkaAddress":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "KafkaTopic":"devo-vehicle-capture-index-topic",
             "MaxMessageBytes":"104857600",
@@ -444,7 +444,7 @@ data:
         },
         "KafkaVehicleCaptureOutputNodeConfig":{
             "KafkaAddress":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "KafkaTopic":"devo-vehicle-capture-topic",
             "MaxMessageBytes":"104857600",
@@ -477,7 +477,7 @@ data:
         },
         "KafkaVehicleWarnOutputNodeConfig":{
             "KafkaAddress":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "KafkaTopic":"devo-vehicle-warn-topic",
             "MaxMessageBytes":"104857600",
@@ -503,7 +503,7 @@ data:
         },
         "KafkaNonmotorCaptureOutputNodeConfig":{
             "KafkaAddress":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "KafkaTopic":"devo-nonmotor-capture-topic",
             "MaxMessageBytes":"104857600",
@@ -529,7 +529,7 @@ data:
         },
         "KafkaPedestrianCaptureOutputNodeConfig":{
             "KafkaAddress":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "KafkaTopic":"devo-pedestrian-capture-topic",
             "MaxMessageBytes":"104857600",

@@ -15,7 +15,7 @@ data:
           "MessageCacheNum": 1000,
           "KafkaInputConfig": {
             "Brokers": [
-              "bootstrap.kafka.svc.cluster.local:9092"
+              "{{.Values.KAFKA_ADDRESS}}"
             ],
             "Topics": [
               "devo-face-capture-topic"
@@ -30,7 +30,7 @@ data:
           "MessageCacheNum": 1000,
           "KafkaInputConfig": {
             "Brokers": [
-              "bootstrap.kafka.svc.cluster.local:9092"
+              "{{.Values.KAFKA_ADDRESS}}"
             ],
             "Topics": [
               "devo-face-warn-topic"
@@ -45,7 +45,7 @@ data:
           "MessageCacheNum": 1000,
           "KafkaInputConfig": {
             "Brokers": [
-              "bootstrap.kafka.svc.cluster.local:9092"
+              "{{.Values.KAFKA_ADDRESS}}"
             ],
             "Topics": [
               "white-push"

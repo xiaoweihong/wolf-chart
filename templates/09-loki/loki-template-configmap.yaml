@@ -15,7 +15,7 @@ data:
             "passwd":"Admin123",
             "camera":"DC84",
             "kafkaconfig":{
-                "kafka_addr":"bootstrap.kafka.svc.cluster.local:9092",
+                "kafka_addr":"{{.Values.KAFKA_ADDRESS}}",
                 "kafka_topic":"face-importer",
                 "kafka_max_size_bytes":"104857600"
             },
@@ -43,7 +43,7 @@ data:
             "back_ground_width":"1920",
             "back_ground_height":"1080",
             "kafkaconfig":{
-                "kafka_addr":"bootstrap.kafka.svc.cluster.local:9092",
+                "kafka_addr":"{{.Values.KAFKA_ADDRESS}}",
                 "kafka_topic":"face-importer",
                 "kafka_max_size_bytes":"104857600"
                           },
@@ -66,7 +66,7 @@ data:
             "user_name":"123",
             "passwd":"123",
             "kafkaconfig":{
-                "kafka_addr":"bootstrap.kafka.svc.cluster.local:9092",
+                "kafka_addr":"{{.Values.KAFKA_ADDRESS}}",
                 "kafka_topic":"face-importer",
                 "kafka_max_size_bytes":"50000000"
                           },
@@ -106,7 +106,7 @@ data:
           "RedLock":null
         },
         "DefaltKafkaConsumer":{
-          "KafkaBootstrapServers":"bootstrap.kafka.svc.cluster.local:9092",
+          "KafkaBootstrapServers":"{{.Values.KAFKA_ADDRESS}}",
           "KafkaGroupName":"index-vehicle2",
           "KafkaTopic":[
             "index-vehicle2"
@@ -168,7 +168,7 @@ data:
         },
         "MatrixMode":true,
         "DeleteMode":false,
-        "DefaultKafkaAddr":"bootstrap.kafka.svc.cluster.local:9092",
+        "DefaultKafkaAddr":"{{.Values.KAFKA_ADDRESS}}",
         "DefaultTask":{
           "Output":{
             "Attributes":[
@@ -178,7 +178,7 @@ data:
               },
               {
                 "Key":"address",
-                "Value":"bootstrap.kafka.svc.cluster.local:9092"
+                "Value":"{{.Values.KAFKA_ADDRESS}}"
               }
             ],
             "SpeedLimit":1,
@@ -247,7 +247,7 @@ data:
                     "MaxThread":100,
                     "KafkaTopic":"face-importer",
                     "KafkaAddress":[
-                        "bootstrap.kafka.svc.cluster.local:9092"
+                        "{{.Values.KAFKA_ADDRESS}}"
                     ],
                     "MaxMessageBytes":"104857600"
                 }
@@ -283,7 +283,7 @@ data:
             "user_name":"admin",
             "passwd":"admin123",
             "kafkaconfig":{
-                "kafka_addr":"bootstrap.kafka.svc.cluster.local:9092",
+                "kafka_addr":"{{.Values.KAFKA_ADDRESS}}",
                 "kafka_topic":"face-importer",
                 "kafka_max_size_bytes":"104857600"
                           },
@@ -305,7 +305,7 @@ data:
             "user_name":"admin",
             "passwd":"admin123",
             "kafkaconfig":{
-                "kafka_addr":"bootstrap.kafka.svc.cluster.local:9092",
+                "kafka_addr":"{{.Values.KAFKA_ADDRESS}}",
                 "kafka_topic":"face-importer",
                 "kafka_max_size_bytes":"104857600"
                           },

@@ -409,9 +409,9 @@ data:
         },
         "platform":{
             "kafkaAddress":[
-                "192.168.100.156:32400",
-                "192.168.100.156:32400",
-                "192.168.100.156:32400"
+                "{{.Values.KAFKA_ADDRESS}}",
+                "{{.Values.KAFKA_ADDRESS}}",
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "defaultGroup":"123",
             "needSync":false,
@@ -495,7 +495,7 @@ data:
                 "needTestData":false
             },
             "mserver":{
-                "run_addr":"http://127.0.0.1:9009",
+                "run_addr":"http://{{.Values.HOSTIP}}:9009",
                 "out_addr":"127.0.0.1:8905"
             },
             "link":{
@@ -556,7 +556,7 @@ data:
         },
         "platform":{
             "kafkaAddress":[
-                "bootstrap.kafka.svc.cluster.local:9092"
+                "{{.Values.KAFKA_ADDRESS}}"
             ],
             "needSync":false,
             "consumer":false,
