@@ -7,7 +7,7 @@ data:
   arcee.json: |
     {
         "Debug": true,
-        "VrrpAddr": "{{.Values.HOSTIP}}:30851",
+        "VrrpAddr": "{{.Values.HOSTIP}}:8501",
         "UseVrrp": true,
         "HttpServiceAddr": "0.0.0.0:8501",
         "GrpcServerAddr": "0.0.0.0:8502",
@@ -41,7 +41,7 @@ data:
   arcee.json: |
     {
         "Debug": true,
-        "VrrpAddr": "{{.Values.HOSTIP}}:30751",
+        "VrrpAddr": "{{.Values.HOSTIP}}:7501",
         "UseVrrp": true,
         "HttpServiceAddr": "0.0.0.0:7501",
         "GrpcServerAddr": "0.0.0.0:7502",

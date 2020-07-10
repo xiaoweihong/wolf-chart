@@ -11,4 +11,4 @@ spec:
   - name: http
     port: 1989
     targetPort: 1989
-    nodePort: 31089
+    nodePort: 1989
