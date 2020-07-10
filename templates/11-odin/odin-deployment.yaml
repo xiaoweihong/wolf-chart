@@ -15,26 +15,81 @@ spec:
     spec:
       containers:
       - name: odin
-        image: dockerhub.deepglint.com/wolf/odin:1.2.2
+        image: dockerhub.deepglint.com/deepface/{{.Values.odin.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
           containerPort: 7071
-        command: ["./odin"]
+        command: ["./run"]
         args:
         - "-stderrthreshold=0"
         - "-logtostderr=true"
         - "-v=4"
+        env:
+        - name: BASE_PG_DEEPFACE_V5_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_PG_DEEPFACE_V5_ADDRESS
+        - name: BASE_FSE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_FSE_HOST
+        - name: BASE_PIC_REGISTER_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_PIC_REGISTER_HOST
+        - name: BASE_PIC_CAPTURE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_PIC_CAPTURE_HOST
+        - name: BASE_DEEPCLOUD_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_DEEPCLOUD_HOST
+        - name: BASE_DEEPCLOUD_AK
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_DEEPCLOUD_AK
+        - name: BASE_DEEPCLOUD_SK	
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_DEEPCLOUD_SK	
+        - name: BASE_DEEPCLOUD_AUTH
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_DEEPCLOUD_AUTH
+        - name: BASE_KAFKA_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_KAFKA_ADDRESS
+        - name: APPLICATION_SAX_VEHICLE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: APPLICATION_SAX_VEHICLE_HOST
+        - name: APPLICATION_PSE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: APPLICATION_PSE_HOST
+        - name: BASE_REDIS_CACHE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_REDIS_CACHE_ADDRESS
         volumeMounts:
-        - name: odin-config
-          mountPath: /odin/configs/config.json
-          subPath: config.json
         - name: localtime
           mountPath: /etc/localtime
       volumes:
-        - name: odin-config
-          configMap:
-            name: odin-config
         - name: localtime
           hostPath:
             path: /etc/localtime

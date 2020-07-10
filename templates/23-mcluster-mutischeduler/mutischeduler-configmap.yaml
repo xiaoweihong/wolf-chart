@@ -10,7 +10,7 @@ data:
         "cluster_mode":true,
         "node_mcluster":{
             "mcluster1":{
-                "host_addr":"192.168.100.156:8966"
+                "host_addr":"{{.Values.HOSTIP}}:8966"
             }
         }
     }

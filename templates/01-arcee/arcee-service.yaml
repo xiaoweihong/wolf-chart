@@ -11,11 +11,11 @@ spec:
   - name: http
     port: 8501
     targetPort: 8501
-    nodePort: 30851
+    nodePort: 8501
   - name: grpc
     port: 8502
     targetPort: 8502
-    nodePort: 30852
+    nodePort: 8502
 
 ---
 
@@ -32,8 +32,8 @@ spec:
   - name: http
     port: 7501
     targetPort: 7501
-    nodePort: 30751
+    nodePort: 7501
   - name: grpc
     port: 7502
     targetPort: 7502
-    nodePort: 30752
+    nodePort: 7502

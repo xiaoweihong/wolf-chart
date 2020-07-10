@@ -11,11 +11,11 @@ spec:
   - name: http
     port: 9333
     targetPort: 9333
-    nodePort: 30333
+    nodePort: 9333
   - name: grpc
     port: 19333
     targetPort: 19333
-    nodePort: 31333
+    nodePort: 19333
 
 ---
 
@@ -32,11 +32,11 @@ spec:
   - name: http
     port: 9300
     targetPort: 9300
-    nodePort: 30300
+    nodePort: 9300
   - name: grpc
     port: 19300
     targetPort: 19300
-    nodePort: 31300
+    nodePort: 19300
 
 ---
 
@@ -53,11 +53,11 @@ spec:
   - name: http
     port: 5333
     targetPort: 5333
-    nodePort: 30533
+    nodePort: 5333
   - name: grpc
     port: 15333
     targetPort: 15333
-    nodePort: 31533
+    nodePort: 15333
 
 ---
 
@@ -74,9 +74,9 @@ spec:
   - name: http
     port: 5300
     targetPort: 5300
-    nodePort: 30500
+    nodePort: 5300
   - name: grpc
     port: 15300
     targetPort: 15300
-    nodePort: 31500
+    nodePort: 15300
 

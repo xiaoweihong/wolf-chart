@@ -1,66 +1,60 @@
 
 namespace: wolf
 
-HOSTIP: 192.168.100.156
+HOSTIP: 192.168.2.111
 
 KAFKA_ADDRESS: bootstrap.kafka.svc.cluster.local:9092
 
 seaweedfs:
-  imageTag: "1.70"
+  imageTag: "1.84"
 
 arcee:
-  imageTag: 0.5.4_sp2
+  imageTag: "0.5.4_sp2"
   
 redis:
   imageTag: "5.0"
 
 archimedes:
-  imageTag: "0.8.34"
+  imageTag: "archimedes-dev_615_docker:0.8.41.5"
 
 athena:
-  imageTag: "v0.14.0"
+  imageTag: "athena-dev:v0.16.4"
 
 bultgang:
-  imageTag: "0.6.6"
+  imageTag: "bultgang-dev:0.6.15"
 
 croatia:
-  imageTag: "2.0.1"
+  imageTag: "croatia-dev:2.2.1"
 
 eventpoxy:
-  imageTag: "1.0.0"
+  imageTag: "eventproxy-dev-1:1.0.0"
 
 loki:
-  imageTag: "2.0.39"
+  imageTag: "loki:v2.3.2"
 
 jormougand:
-  imageTag: "6.0.6"
+  imageTag: "8.0.7"
 
 odin:
-  imageTag: "1.2.2"
+  imageTag: "odin-dev:1.4.8"
 
 k2s:
-  imageTag: "0.2.10"
+  imageTag: "k2s-dev:0.2.14"
 
 iris:
-  imageTag: "0.2.7"
+  imageTag: "iris-dev:0.2.9"
 
 flora:
-  imageTag: "0.0.6"
-
-odin:
-  imageTag: "1.2.2"
+  imageTag: "flora:v0.2.0"
 
 isd:
   imageTag: "0.9.2"
-
-k2s:
-  imageTag: "0.2.10"
 
 kronos:
   imageTag: "0.11.0"
 
 pse:
-  imageTag: "0.8.2"
+  imageTag: "pse-dev_path:0.8.3"
 
 sax_vehicle:
   imageTag: "1.1"
@@ -68,11 +62,8 @@ sax_vehicle:
 themis:
   imageTag: "0.8.5"
 
-iris:
-  imageTag: "0.2.7"
-
-flora:
-  imageTag: "0.0.6"
+elastic:
+  imageTag: "elasticsearch-with-ik:7.5.2"
 
 application:
   - name: capture

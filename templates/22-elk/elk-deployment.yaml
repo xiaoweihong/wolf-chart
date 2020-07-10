@@ -7,15 +7,15 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: elk
+      name: elastic
   template:
     metadata:
       labels:
-        name: elk
+        name: elastic
     spec:
       containers:
-      - name: elk
-        image: elasticsearch:7.5.2
+      - name: elastic
+        image: dockerhub.deepglint.com/deepface/{{.Values.elastic.imageTag}}
         imagePullPolicy: IfNotPresent
         env:
         - name: discovery.type
@@ -31,42 +31,7 @@ spec:
       volumes:
         - name: elk-data
           hostPath:
-            path: /platformData/elk/elasticsearch/data2
-        - name: localtime
-          hostPath:
-            path: /etc/localtime
-      
----
-
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: logstash
-  namespace: {{.Values.namespace}}
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      name: logstash
-  template:
-    metadata:
-      labels:
-        name: logstash
-    spec:
-      containers:
-      - name: logstash
-        image: logstash:7.5.2
-        imagePullPolicy: IfNotPresent
-        volumeMounts:
-        - name: localtime
-          mountPath: /etc/localtime
-        - name: logstash-config
-          mountPath: /usr/share/logstash/pipeline
-      volumes:
-        - name: logstash-config
-          configMap:
-            name: logstash-config
+            path: /platformData/elk/elasticsearch/data
         - name: localtime
           hostPath:
             path: /etc/localtime

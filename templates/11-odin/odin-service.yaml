@@ -11,4 +11,4 @@ spec:
   - name: http
     port: 7071
     targetPort: 7071
-    nodePort: 30071
+    nodePort: 7071

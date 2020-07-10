@@ -15,25 +15,31 @@ spec:
     spec:
       containers:
       - name: archimedes
-        image: dockerhub.deepglint.com/wolf/archimedes:{{.Values.archimedes.imageTag}}
+        image: dockerhub.deepglint.com/deepface/{{.Values.archimedes.imageTag}}
         imagePullPolicy: IfNotPresent
+        env:
+        - name: BASE_PG_STATISTICS_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_PG_STATISTICS_ADDRESS
+        - name: BASE_ARCHIMEDES_REDIS_CACHE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_ARCHIMEDES_REDIS_CACHE_ADDRESS
         ports:
         - name: http
           containerPort: 6666
-        command: ["./archimedes"]
+        command: ["./run"]
         args:
         - "-stderrthreshold=0"
         - "-logtostderr=true"
         - "-v=4"
         volumeMounts:
-        - name: archimedes-config
-          mountPath: /archimedes/config
         - name: localtime
           mountPath: /etc/localtime
       volumes:
-        - name: archimedes-config
-          configMap:
-            name: archimedes-config
         - name: localtime
           hostPath:
             path: /etc/localtime

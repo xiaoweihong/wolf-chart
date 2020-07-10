@@ -15,25 +15,31 @@ spec:
     spec:
       containers:
       - name: athena
-        image: dockerhub.deepglint.com/wolf/athena:{{.Values.athena.imageTag}}
+        image: dockerhub.deepglint.com/deepface/{{.Values.athena.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
           containerPort: 2013
-        command: ["./athena"]
+        command: ["./run"]
         args:
         - "-stderrthreshold=0"
         - "-logtostderr=true"
         - "-v=8"
+        env:
+        - name: BASE_PG_DEEPFACE_V5_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_PG_DEEPFACE_V5_ADDRESS
+        - name: BASE_FSE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_FSE_HOST
         volumeMounts:
-        - name: athena-run-config
-          mountPath: /athena/athenadir/config
         - name: localtime
           mountPath: /etc/localtime
       volumes:
-        - name: athena-run-config
-          configMap:
-            name: athena-config
         - name: localtime
           hostPath:
             path: /etc/localtime

@@ -29,7 +29,7 @@ spec:
              value: "true"
            imagePullPolicy: IfNotPresent
            ports:
-           - containerPort: 6378
+           - containerPort: 6379
            volumeMounts:
            - name: cache-data
              mountPath: /redis-cache-data
@@ -48,7 +48,7 @@ spec:
              value: "true"
            imagePullPolicy: IfNotPresent
            ports:
-           - containerPort: 6379
+           - containerPort: 6380
            volumeMounts:
            - name: persistence-data
              mountPath: /redis-persistence-data
@@ -85,8 +85,8 @@ spec:
     app: redis
   ports:
   - name: cache
-    port: 6378
-    targetPort: 6378
-  - name: persistence
     port: 6379
     targetPort: 6379
+  - name: persistence
+    port: 6380
+    targetPort: 6380

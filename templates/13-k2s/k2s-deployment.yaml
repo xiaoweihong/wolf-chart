@@ -15,26 +15,36 @@ spec:
     spec:
       containers:
       - name: k2s
-        image: dockerhub.deepglint.com/wolf/k2s:{{.Values.k2s.imageTag}}
+        image: dockerhub.deepglint.com/deepface/{{.Values.k2s.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
           containerPort: 8082
-        command: ["./k2s"]
+        command: ["./run"]
         args:
         - "-stderrthreshold=0"
         - "-logtostderr=true"
-        - "-f=/k2s/config/config.json"
         - "-v=4"
+        env:
+        - name: BASE_PG_DEEPFACE_V5_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_PG_DEEPFACE_V5_ADDRESS
+        - name: BASE_PG_SPECIAL_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_PG_SPECIAL_ADDRESS
+        - name: BASE_KAFKA_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_KAFKA_ADDRESS
         volumeMounts:
-        - name: k2s-config
-          mountPath: /k2s/config
         - name: localtime
           mountPath: /etc/localtime
       volumes:
-        - name: k2s-config
-          configMap:
-            name: k2s-config
         - name: localtime
           hostPath:
             path: /etc/localtime

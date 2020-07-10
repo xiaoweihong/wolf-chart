@@ -15,52 +15,137 @@ spec:
     spec:
       containers:
       - name: loki
-        image: dockerhub.deepglint.com/wolf/loki:2.0.39
+        image: dockerhub.deepglint.com/deepface/{{.Values.loki.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
           containerPort: 3000
-        env:
-        - name: ENVIRONMENT
-          value: production
         command: ["./loki"]
         args:
         - "-stderrthreshold=0"
         - "-logtostderr=true"
         - "-v=8"
         env:
+        - name: ENVIRONMENT
+          value: production
         - name: HOSTIP
           valueFrom:
             fieldRef:
               fieldPath: status.hostIP
+        - name: BASE_PG_DEEPFACE_V5_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_PG_DEEPFACE_V5_ADDRESS
+        - name: BASE_FSE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_FSE_HOST
+        - name: BASE_PIC_REGISTER_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_PIC_REGISTER_HOST
+        - name: BASE_MUTISCHEDULER_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_MUTISCHEDULER_HOST
+        - name: BASE_MSERVER_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_MSERVER_HOST
+        - name: BASE_LINK_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_LINK_HOST
+        - name: BASE_VSE_ALL_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_VSE_ALL_HOST
+        - name: BASE_ELASTIC_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_ELASTIC_HOST
+        - name: BASE_REDIS_CACHE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_REDIS_CACHE_ADDRESS
+        - name: BASE_DEEPCLOUD_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_DEEPCLOUD_HOST
+        - name: BASE_DEEPCLOUD_AK
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_DEEPCLOUD_AK
+        - name: BASE_DEEPCLOUD_SK	
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_DEEPCLOUD_SK	
+        - name: BASE_DEEPCLOUD_AUTH
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_DEEPCLOUD_AUTH
+        - name: BASE_KAFKA_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_KAFKA_ADDRESS
+        - name: BASE_UNION_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_UNION_HOST
+        - name: APPLICATION_ATHENA_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: APPLICATION_ATHENA_HOST
+        - name: APPLICATION_PSE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: APPLICATION_PSE_HOST
+        - name: APPLICATION_ARCHIMEDES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: APPLICATION_ARCHIMEDES_HOST
+        - name: APPLICATION_THEMIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: APPLICATION_THEMIS_HOST
+        - name: APPLICATION_YMER_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: APPLICATION_YMER_HOST
         volumeMounts:
-        - name: loki-config
-          mountPath: /loki/config/production.json
-          subPath: production.json
-        - name: loki-config
-          mountPath: /loki/config/default.json
-          subPath: default.json
         - name: loki-template-config
           mountPath: /loki/config/templates
         - name: loki-upload
           mountPath: /platformData/loki/upload
-        - name: loki-video
-          mountPath: /data/bigtoe/upload-videos
         - name: localtime
           mountPath: /etc/localtime
       volumes:
-        - name: loki-config
-          configMap:
-            name: loki-config
         - name: loki-template-config
           configMap:
             name: loki-template-config
         - name: loki-upload
           hostPath:
             path: /platformData/loki/upload
-        - name: loki-video
-          hostPath:
-            path: /data/bigtoe/upload-videos
         - name: localtime
           hostPath:
             path: /etc/localtime

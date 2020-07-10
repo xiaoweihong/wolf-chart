@@ -13,7 +13,7 @@ data:
         "GrpcServerAddr": "0.0.0.0:8502",
         "WeedConfig": {
             "AsyncConfig":{
-                "Enable": true,
+                "Enable": false,
                 "FidChanLen": 100,
                 "JobChanLen": 10000,
                 "JobNums": 10
@@ -30,7 +30,6 @@ data:
         },
         "CacheTTL": 0
     }
-
 ---
 
 apiVersion: v1
@@ -48,7 +47,7 @@ data:
         "GrpcServerAddr": "0.0.0.0:7502",
         "WeedConfig": {
             "AsyncConfig":{
-                "Enable": true,
+                "Enable": false,
                 "FidChanLen": 100,
                 "JobChanLen": 10000,
                 "JobNums": 10
@@ -64,4 +63,3 @@ data:
         },
         "CacheTTL": 0
     }
-

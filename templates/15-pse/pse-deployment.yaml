@@ -15,26 +15,26 @@ spec:
     spec:
       containers:
       - name: pse
-        image: dockerhub.deepglint.com/wolf/pse:0.8.2
+        image: dockerhub.deepglint.com/deepface/{{.Values.pse.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
           containerPort: 1989 
-        command: ["./pse"]
+        command: ["./run"]
         args:
         - "-stderrthreshold=0"
         - "-logtostderr=true"
         - "-v=4"
+        env:
+        - name: BASE_PSE_REDIS_STORAGE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_PSE_REDIS_STORAGE_ADDRESS
         volumeMounts:
-        - name: pse-config
-          mountPath: /pse/config/config.json
-          subPath: config.json
         - name: localtime
           mountPath: /etc/localtime
       volumes:
-        - name: pse-config
-          configMap:
-            name: pse-config
         - name: localtime
           hostPath:
             path: /etc/localtime

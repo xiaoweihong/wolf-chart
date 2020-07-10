@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: flora
-        image: dockerhub.deepglint.com/wolf/flora:{{.Values.flora.imageTag}}
+        image: dockerhub.deepglint.com/deepface/{{.Values.flora.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -23,15 +23,23 @@ spec:
         command: ["./flora"]
         args:
         - "-level=0"
+        env:
+        - name: ENVIRONMENT
+          value: production
+        - name: BASE_PG_DEEPFACE_V5_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_PG_DEEPFACE_V5_ADDRESS
+        - name: BASE_REDIS_CACHE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_REDIS_CACHE_ADDRESS
         volumeMounts:
-        - name: flora-config
-          mountPath: /flora/config
         - name: localtime
           mountPath: /etc/localtime
       volumes:
-        - name: flora-config
-          configMap:
-            name: flora-config
         - name: localtime
           hostPath:
             path: /etc/localtime

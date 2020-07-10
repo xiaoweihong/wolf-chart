@@ -15,7 +15,7 @@ spec:
       hostNetwork: true
       containers:
       - name: mcluster
-        image: docker.dg-atlas.com:5000/mcluster:4.1.0
+        image: dockerhub.deepglint.com/deepface/mcluster:4.1.0
         imagePullPolicy: IfNotPresent
         command: 
         - "./mcluster"

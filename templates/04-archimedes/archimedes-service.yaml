@@ -11,4 +11,4 @@ spec:
   - name: http
     port: 6666
     targetPort: 6666
-    nodePort: 31066
+    nodePort: 6666

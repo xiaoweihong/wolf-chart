@@ -15,28 +15,48 @@ spec:
     spec:
       containers:
       - name: croatia
-        image: dockerhub.deepglint.com/wolf/croatia:{{.Values.croatia.imageTag}}
+        image: dockerhub.deepglint.com/deepface/{{.Values.croatia.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
           containerPort: 1314
-        command: ["./croatia"]
+        command: ["./run"]
         args:
         - "-stderrthreshold=0"
         - "-logtostderr=true"
         - "-v=8"
+        env:
+        - name: BASE_PG_DEEPFACE_V5_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_PG_DEEPFACE_V5_ADDRESS
+        - name: BASE_VSE_ALL_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_VSE_ALL_HOST
+        - name: BASE_FSE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_FSE_HOST
+        - name: BASE_PIC_REGISTER_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_PIC_REGISTER_HOST
+        - name: APPLICATION_LOKI_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: APPLICATION_LOKI_HOST
         volumeMounts:
-        - name: croatia-config
-          mountPath: /croatia/config/croatia_config.txt
-          subPath: croatia_config.txt
         - name: croatia-upload
           mountPath: /platformData/loki/upload
         - name: localtime
           mountPath: /etc/localtime
       volumes:
-        - name: croatia-config
-          configMap:
-            name: croatia-config
         - name: croatia-upload
           hostPath:
             path: /platformData/loki/upload

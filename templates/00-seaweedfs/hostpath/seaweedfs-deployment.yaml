@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: capture-seaweedfs-master
-        image: dockerhub.deepglint.com/wolf/seaweedfs:{{.Values.seaweedfs.imageTag}}
+        image: dockerhub.deepglint.com/deepface/seaweedfs:{{.Values.seaweedfs.imageTag}}
         ports:
         - name: http
           containerPort: 9333
@@ -59,7 +59,7 @@ spec:
     spec:
       containers:
       - name: capture-seaweedfs-volume00
-        image: dockerhub.deepglint.com/wolf/seaweedfs:{{.Values.seaweedfs.imageTag}}
+        image: dockerhub.deepglint.com/deepface/seaweedfs:{{.Values.seaweedfs.imageTag}}
         ports:
         - name: http
           containerPort: 9300
@@ -70,7 +70,7 @@ spec:
         - "volume"
         - "-mserver=capture-seaweedfs-service-master.wolf.svc.cluster.local:9333"
         - "-ip=capture-seaweedfs-service-volume00.wolf.svc.cluster.local"
-        - "-publicUrl={{.Values.HOSTIP}}:30300"
+        - "-publicUrl={{.Values.HOSTIP}}:9300"
         - "-dir=/data"
         - "-port=9300"
         - "-max=0"
@@ -105,7 +105,7 @@ spec:
     spec:
       containers:
       - name: register-seaweedfs-master
-        image: dockerhub.deepglint.com/wolf/seaweedfs:{{.Values.seaweedfs.imageTag}}
+        image: dockerhub.deepglint.com/deepface/seaweedfs:{{.Values.seaweedfs.imageTag}}
         ports:
         - name: http
           containerPort: 5333
@@ -149,7 +149,7 @@ spec:
     spec:
       containers:
       - name: register-seaweedfs-volume00
-        image: dockerhub.deepglint.com/wolf/seaweedfs:{{.Values.seaweedfs.imageTag}}
+        image: dockerhub.deepglint.com/deepface/seaweedfs:{{.Values.seaweedfs.imageTag}}
         ports:
         - name: http
           containerPort: 5300
@@ -160,7 +160,7 @@ spec:
         - "volume"
         - "-mserver=register-seaweedfs-service-master.wolf.svc.cluster.local:5333"
         - "-ip=register-seaweedfs-service-volume00.wolf.svc.cluster.local"
-        - "-publicUrl={{.Values.HOSTIP}}:30500"
+        - "-publicUrl={{.Values.HOSTIP}}:5300"
         - "-dir=/data"
         - "-port=5300"
         - "-max=0"

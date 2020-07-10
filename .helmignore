@@ -22,3 +22,4 @@
 zk-kafka/
 #redis/
 18-flink
+ingress-nginx/

@@ -15,26 +15,46 @@ spec:
     spec:
       containers:
       - name: iris
-        image: dockerhub.deepglint.com/wolf/iris:{{.Values.iris.imageTag}}
+        image: dockerhub.deepglint.com/deepface/{{.Values.iris.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
           containerPort: 8083
-        command: ["./iris"]
+        command: ["./run"]
         args:
         - "-stderrthreshold=0"
         - "-logtostderr=true"
         - "-v=4"
+        env:
+        - name: BASE_PG_DEEPFACE_V5_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_PG_DEEPFACE_V5_ADDRESS
+        - name: BASE_KAFKA_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_KAFKA_ADDRESS
+        - name: APPLICATION_ARCHIMEDES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: APPLICATION_ARCHIMEDES_HOST
+        - name: APPLICATION_FLORA_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: APPLICATION_FLORA_HOST
+        - name: APPLICATION_LOKI_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: APPLICATION_LOKI_HOST
         volumeMounts:
-        - name: iris-config
-          mountPath: /iris/config.json
-          subPath: config.json
         - name: localtime
           mountPath: /etc/localtime
       volumes:
-        - name: iris-config
-          configMap:
-            name: iris-config
         - name: localtime
           hostPath:
             path: /etc/localtime

@@ -1,0 +1,35 @@
+kind: ConfigMap
+metadata:
+  name: mserver-config
+  namespace: wolf
+apiVersion: v1
+data:
+  config.json: |-
+    {
+        "http_api_port": 8964,
+        "grpc_api_port": 8965,
+        "servers":
+        {
+            "rtsp":
+            {
+                "type": "rtsp",
+                "port": 554,
+                "push": false,
+                "pull": true
+            },
+            "rtmp":
+            {
+                 "type": "rtmp",
+                 "port": 1935,
+                 "push": true,
+                 "pull": true
+            },
+            "dmi":
+            {
+                 "type": "dmi",
+                 "port": 8905,
+                 "push": true,
+                 "pull": true
+            }
+        }
+    }

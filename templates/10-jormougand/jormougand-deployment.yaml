@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: jormougand
-        image: dockerhub.deepglint.com/wolf/jormougand:{{.Values.jormougand.imageTag}}
+        image: dockerhub.deepglint.com/deepface/jormougand:{{.Values.jormougand.imageTag}}
         imagePullPolicy: IfNotPresent
         ports:
         - name: http

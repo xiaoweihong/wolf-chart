@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: mserver
+  namespace: wolf
+  labels:
+     app: mserver
+spec:
+     selector:
+       matchLabels:
+         app: mserver
+     template:
+       metadata:
+         labels:
+           app: mserver
+       spec: 
+         dnsConfig:
+           options:
+             - name: single-request-reopen
+         containers:
+         - name: mserver
+           image: dockerhub.deepglint.com/atlas/mserver:2.7.5
+           command: ["/atlas/mserver"]
+           args: ["-path=/atlas/config/config.json"]
+           imagePullPolicy: IfNotPresent
+           ports:
+           - name: dmi-port
+             containerPort: 8905
+             hostPort: 8905
+           - name: rtsp-port
+             containerPort: 554
+             hostPort: 554
+           - name: rtmp-port
+             containerPort: 1935
+             hostPort: 1935
+           - name: http-port
+             containerPort: 8964
+             hostPort: 8964
+           - name: gprc-port
+             containerPort: 8965
+             hostPort: 8965
+           volumeMounts:
+           - name: mserver-config-volumes
+             mountPath: /atlas/config/
+           - name: localtime
+             mountPath: /etc/localtime
+         volumes:
+         - name: mserver-config-volumes
+           configMap:
+             name: mserver-config 
+         - name: localtime
+           hostPath:
+             path: /etc/localtime

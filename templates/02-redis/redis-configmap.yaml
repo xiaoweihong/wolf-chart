@@ -43,7 +43,7 @@ data:
     #绑定IP
     bind 0.0.0.0
     #监听tcp端口  
-    port 6378 
+    port 6379 
     dir /redis-cache-data
     #最大可用内存  
     maxmemory 8gb
@@ -113,7 +113,7 @@ data:
     #绑定IP
     bind 0.0.0.0
     #监听tcp端口  
-    port 6379
+    port 6380
     dir /redis-persistence-data
     #最大可用内存  
     maxmemory 10gb
