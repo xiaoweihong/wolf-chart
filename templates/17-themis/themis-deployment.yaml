@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: themis
+  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: themis
+  template:
+    metadata:
+      labels:
+        name: themis
+    spec:
+      containers:
+      - name: themis
+        image: dockerhub.deepglint.com/deepface/{{.Values.themis.imageTag}}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 7777
+        command: ["./run"]
+        args:
+        - "-stderrthreshold=0"
+        - "-logtostderr=true"
+        - "-v=4"
+        env:
+        - name: BASE_PG_SPECIAL_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_PG_SPECIAL_ADDRESS
+        - name: BASE_KAFKA_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: basenv
+              key: BASE_KAFKA_ADDRESS
+        volumeMounts:
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime

@@ -39,7 +39,7 @@ odin:
   imageTag: "odin-dev:1.4.8"
 
 k2s:
-  imageTag: "k2s-dev:0.2.14"
+  imageTag: "k2s-dev:0.2.15"
 
 iris:
   imageTag: "iris-dev:0.2.9"
@@ -60,7 +60,7 @@ sax_vehicle:
   imageTag: "1.1"
 
 themis:
-  imageTag: "0.8.5"
+  imageTag: "themis-dev-srk:0.8.27"
 
 elastic:
   imageTag: "elasticsearch-with-ik:7.5.2"

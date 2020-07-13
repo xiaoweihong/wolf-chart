@@ -2,12 +2,12 @@
 
 1. eventpoxy
 2. isd
-3. k2s
+3. ~~~k2s~~~
 4. kronos
-5. sax-vehicle
-6. es
+5. ~~~sax-vehicle~~~
+6. ~~~es~~~
 7. isd
-8. themis
+8. ~~~themis~~~
 9. ullr
 
 

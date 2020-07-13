@@ -13,6 +13,13 @@ spec:
       labels:
         name: elastic
     spec:
+      initContainers:
+      - name: volume-mount-hack
+        image: busybox
+        command: ["sh", "-c", "chown -R 1000 /platformData/elk"]
+        volumeMounts:
+        - name: elk-data 
+          mountPath: /platformData/elk
       containers:
       - name: elastic
         image: dockerhub.deepglint.com/deepface/{{.Values.elastic.imageTag}}
