@@ -6,9 +6,8 @@
 4. kronos
 5. ~~~sax-vehicle~~~
 6. ~~~es~~~
-7. isd
-8. ~~~themis~~~
-9. ullr
+7. ~~~themis~~~
+8. ullr
 
 
 ### 优化项
