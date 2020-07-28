@@ -4,16 +4,16 @@
 BASE_KAFKA_ADDRESS=192.168.2.162:32400
 
 # 用于缓存的redis地址 (loki,odin,flora共用)
-BASE_REDIS_CACHE_ADDRESS=tcp://:deepglint@2013@redis-service.wolf.svc.cluster.local:6379?db=0
+BASE_REDIS_CACHE_ADDRESS=tcp://:deepglint@2013@redis.wolf-dev.svc.cluster.local:6379?db=0
 
 # 用于缓存的redis地址 (archimedes专属)
-BASE_ARCHIMEDES_REDIS_CACHE_ADDRESS=tcp://:deepglint@2013@redis-service.wolf.svc.cluster.local:6379?db=1
+BASE_ARCHIMEDES_REDIS_CACHE_ADDRESS=tcp://:deepglint@2013@redis.wolf-dev.svc.cluster.local:6379?db=1
 
 # 用于存储的redis地址 (pse专属)
-BASE_PSE_REDIS_STORAGE_ADDRESS=tcp://:deepglint@2013@redis-service.wolf.svc.cluster.local:6380?db=0
+BASE_PSE_REDIS_STORAGE_ADDRESS=tcp://:deepglint@2013@redis.wolf-dev.svc.cluster.local:6380?db=0
 
 # 用于存储的redis地址 (rugine专属)
-BASE_RUGINE_REDIS_STORAGE_ADDRESS=tcp://:deepglint@2013@redis-service.wolf.svc.cluster.local:6380?db=1
+BASE_RUGINE_REDIS_STORAGE_ADDRESS=tcp://:deepglint@2013@redis.wolf-dev.svc.cluster.local:6380?db=1
 
 # 数据库地址 deepface_v5
 BASE_PG_DEEPFACE_V5_ADDRESS=postgres://postgres:Zstvgcs@9102@192.168.100.118:5432/deepface_v5?sslmode=disable
@@ -34,10 +34,10 @@ BASE_FSE_HOST=192.168.2.162:3154
 BASE_ELASTIC_HOST=192.168.100.118:9200
 
 # 抓拍图地址 (默认保存6个月)
-BASE_PIC_CAPTURE_HOST=arcee-capture-service.wolf.svc.cluster.local:8502
+BASE_PIC_CAPTURE_HOST=arcee-capture-service.wolf-dev.svc.cluster.local:8502
 
 # 比对库图地址 (永久保存)
-BASE_PIC_REGISTER_HOST=arcee-register-service.wolf.svc.cluster.local:7502
+BASE_PIC_REGISTER_HOST=arcee-register-service.wolf-dev.svc.cluster.local:7502
 
 # 流媒体mutischeduler转发工具地址
 BASE_MUTISCHEDULER_HOST=192.168.2.111:9009
@@ -67,40 +67,40 @@ BASE_LINK_HOST=192.168.2.162:30233
 BASE_UNION_HOST=192.168.2.162:3154
 
 # 应用archimedes地址
-APPLICATION_ARCHIMEDES_HOST=archimedes-service.wolf.svc.cluster.local:6666
+APPLICATION_ARCHIMEDES_HOST=archimedes-service.wolf-dev.svc.cluster.local:6666
 
 # 应用athena地址
-APPLICATION_ATHENA_HOST=athena-service.wolf.svc.cluster.local:2013
+APPLICATION_ATHENA_HOST=athena-service.wolf-dev.svc.cluster.local:2013
 
 # 应用bultgang地址
-APPLICATION_BULTGANG_HOST=bultgang-service.wolf.svc.cluster.local:18082
+APPLICATION_BULTGANG_HOST=bultgang-service.wolf-dev.svc.cluster.local:18082
 
 # 应用croatia地址
-APPLICATION_CROATIA_HOST=croatia-service.wolf.svc.cluster.local:1314
+APPLICATION_CROATIA_HOST=croatia-service.wolf-dev.svc.cluster.local:1314
 
 # 应用eventproxy地址
-APPLICATION_EVENTPROXY_HOST=eventproxy-service.wolf.svc.cluster.local:1919
+APPLICATION_EVENTPROXY_HOST=eventproxy-service.wolf-dev.svc.cluster.local:1919
 
 # 应用flora地址
-APPLICATION_FLORA_HOST=flora-service.wolf.svc.cluster.local:4000
+APPLICATION_FLORA_HOST=flora-service.wolf-dev.svc.cluster.local:4000
 
 # 应用iris地址
-APPLICATION_IRIS_HOST=iris-service.wolf.svc.cluster.local:8083
+APPLICATION_IRIS_HOST=iris-service.wolf-dev.svc.cluster.local:8083
 
 # 应用k2s地址
-APPLICATION_K2S_HOST=k2s-service.wolf.svc.cluster.local:8082
+APPLICATION_K2S_HOST=k2s-service.wolf-dev.svc.cluster.local:8082
 
 # 应用loki地址
-APPLICATION_LOKI_HOST=loki-service.wolf.svc.cluster.local:3000
+APPLICATION_LOKI_HOST=loki-service.wolf-dev.svc.cluster.local:3000
 
 # 应用pse地址
-APPLICATION_PSE_HOST=pse-service.wolf.svc.cluster.local:1989
+APPLICATION_PSE_HOST=pse-service.wolf-dev.svc.cluster.local:1989
 
 # 应用sax_vehicle地址
-APPLICATION_SAX_VEHICLE_HOST=sax-vehicle-service.wolf.svc.cluster.local:8084
+APPLICATION_SAX_VEHICLE_HOST=sax-vehicle-service.wolf-dev.svc.cluster.local:8084
 
 # 应用themis地址
-APPLICATION_THEMIS_HOST=themis-service.wolf.svc.cluster.local:7777
+APPLICATION_THEMIS_HOST=themis-service.wolf-dev.svc.cluster.local:7777
 
 # 应用ymer地址
-APPLICATION_YMER_HOST=ymer-service.wolf.svc.cluster.local:9750
+APPLICATION_YMER_HOST=ymer-service.wolf-dev.svc.cluster.local:9750
