@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox-deployment
+#  namespace: wolf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: busybox
+        command:
+        - echo
+        - "$(NODE_HOSTIP)"
+        - sleep
+        - "3600"
+        image: busybox:1.28.4
+        env:
+        - name: NODE_HOSTIP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
